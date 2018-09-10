@@ -18,10 +18,15 @@
 #define CONFIG_SYS_NO_FLASH
 
 /* Generic Interrupt Controller Definitions */
+#ifdef ORG
 #define CONFIG_GICV2
 #define GICD_BASE	0xF9010000
 #define GICC_BASE	0xF9020000
-
+#else
+#define CONFIG_GICV3
+#define GICD_BASE	0xF9000000
+#define GICR_BASE	0xF9100000
+#endif
 #define CONFIG_SYS_ALT_MEMTEST
 #define CONFIG_SYS_MEMTEST_SCRATCH	0xfffc0000
 

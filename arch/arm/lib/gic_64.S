@@ -109,25 +109,27 @@ ENTRY(gic_init_secure_percpu)
 	str	w11, [x10, GICR_ISENABLERn]
 
 	/* Initialize Cpu Interface */
+#ifdef ORG	/* comment out by DK: because u-boot is now at EL2 */
 	mrs	x10, ICC_SRE_EL3
 	orr	x10, x10, #0xf		/* SRE & Disable IRQ/FIQ Bypass & */
 					/* Allow EL2 access to ICC_SRE_EL2 */
 	msr	ICC_SRE_EL3, x10
 	isb
-
+#endif
 	mrs	x10, ICC_SRE_EL2
 	orr	x10, x10, #0xf		/* SRE & Disable IRQ/FIQ Bypass & */
 					/* Allow EL1 access to ICC_SRE_EL1 */
 	msr	ICC_SRE_EL2, x10
 	isb
 
+#ifdef ORG	/* comment out by DK: because u-boot is now at EL2 */
 	mov	x10, #0x3		/* EnableGrp1NS | EnableGrp1S */
 	msr	ICC_IGRPEN1_EL3, x10
 	isb
 
 	msr	ICC_CTLR_EL3, xzr
 	isb
-
+#endif
 	msr	ICC_CTLR_EL1, xzr	/* NonSecure ICC_CTLR_EL1 */
 	isb
 
