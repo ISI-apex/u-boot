@@ -10,6 +10,7 @@
 #ifndef __CONFIG_ZYNQMP_ZCU102_H
 #define __CONFIG_ZYNQMP_ZCU102_H
 
+#if 0
 #define CONFIG_ZYNQ_SDHCI1
 #define CONFIG_ZYNQ_I2C0
 #define CONFIG_ZYNQ_I2C1
@@ -46,6 +47,7 @@
 #define CONFIG_ZYNQ_EEPROM_BUS		5
 #define CONFIG_ZYNQ_GEM_EEPROM_ADDR	0x54
 #define CONFIG_ZYNQ_GEM_I2C_MAC_OFFSET	0x20
+#endif
 
 #include <configs/xilinx_zynqmp.h>
 
