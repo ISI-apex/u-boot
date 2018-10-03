@@ -239,6 +239,14 @@ config CPU_V7R
 	select SYS_ARM_MPU
 	select SYS_CACHE_SHIFT_6
 
+config CPU_V8R
+	bool
+	select HAS_THUMB2
+	select HAS_VBAR
+	select SYS_ARM_CACHE_CP15
+	select SYS_ARM_MPU
+	select SYS_CACHE_SHIFT_6
+
 config CPU_PXA
 	bool
 	select SYS_CACHE_SHIFT_5
@@ -262,6 +270,7 @@ config SYS_CPU
 	default "pxa" if CPU_PXA
 	default "sa1100" if CPU_SA1100
 	default "armv8" if ARM64
+	default "armv8r" if CPU_V8R
 
 config SYS_ARM_ARCH
 	int
@@ -277,6 +286,7 @@ config SYS_ARM_ARCH
 	default 5 if CPU_PXA
 	default 4 if CPU_SA1100
 	default 8 if ARM64
+	default 8 if CPU_V8R
 
 config SYS_CACHE_SHIFT_5
 	bool
@@ -295,7 +305,7 @@ config SYS_CACHELINE_SIZE
 
 config SYS_ARCH_TIMER
 	bool "ARM Generic Timer support"
-	depends on CPU_V7A || ARM64
+	depends on CPU_V7A || ARM64 || CPU_V8R
 	default y if ARM64
 	help
 	  The ARM Generic Timer (aka arch-timer) provides an architected
@@ -888,6 +898,15 @@ config ARCH_ZYNQ
 	imply CMD_SPL
 	imply FAT_WRITE
 
+config ARCH_HPSC_RTPS_R52 
+	bool "HPSC RTPS R52 based platform"
+	select CLK
+	select CPU_V8R
+	select DM
+	select DM_SERIAL
+	select OF_CONTROL
+	imply CMD_DM
+
 config ARCH_ZYNQMP_R5
 	bool "Xilinx ZynqMP R5 based platform"
 	select CLK
@@ -1446,6 +1465,8 @@ source "arch/arm/mach-tegra/Kconfig"
 source "arch/arm/mach-uniphier/Kconfig"
 
 source "arch/arm/cpu/armv7/vf610/Kconfig"
+
+source "arch/arm/mach-rtps-r52/Kconfig"
 
 source "arch/arm/mach-zynq/Kconfig"
 

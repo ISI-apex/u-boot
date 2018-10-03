@@ -18,6 +18,7 @@ arch-$(CONFIG_CPU_V7A)		=$(call cc-option, -march=armv7-a, \
 				 $(call cc-option, -march=armv7))
 arch-$(CONFIG_CPU_V7M)		=-march=armv7-m
 arch-$(CONFIG_CPU_V7R)		=-march=armv7-r
+arch-$(CONFIG_CPU_V8R)		=-march=armv8-r
 arch-$(CONFIG_ARM64)		=-march=armv8-a
 
 # On Tegra systems we must build SPL for the armv4 core on the device
@@ -81,6 +82,7 @@ machine-$(CONFIG_TEGRA)			+= tegra
 machine-$(CONFIG_ARCH_UNIPHIER)		+= uniphier
 machine-$(CONFIG_ARCH_ZYNQ)		+= zynq
 machine-$(CONFIG_ARCH_ZYNQMP_R5)	+= zynqmp-r5
+machine-$(CONFIG_ARCH_HPSC_RTPS_R52)	+= rtps-r52
 
 machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
 
