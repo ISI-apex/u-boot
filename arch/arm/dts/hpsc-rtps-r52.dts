@@ -30,9 +30,9 @@
 		serial0 = &uart1;
 	};
 
-	memory@0 {
+	memory@40000000 {
 		device_type = "memory";
-		reg = <0x00000000 0x20000000>;
+		reg = <0x40000000 0x40000000>;
 	};
 
 	chosen {
@@ -54,18 +54,18 @@
 		#size-cells = <1>;
 		ranges;
 
-		ttc0: timer@ff110000 {
+		ttc0: timer@38300000{
 			compatible = "cdns,ttc";
 			status = "okay";
-			reg = <0xff110000 0x1000>;
+			reg = <0x38300000 0x1000>;
 			timer-width = <32>;
 			clocks = <&clk100>;
 		};
 
-		uart1: serial@ff010000 {
+		uart1: serial@30001000 {
 			u-boot,dm-pre-reloc;
 			compatible = "cdns,uart-r1p12", "xlnx,xuartps";
-			reg = <0xff010000 0x1000>;
+			reg = <0x30001000 0x1000>;
 			clock-names = "uart_clk", "pclk";
 			clocks = <&clk100 &clk100>;
 		};
