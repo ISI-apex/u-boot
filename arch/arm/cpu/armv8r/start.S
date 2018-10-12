@@ -18,6 +18,7 @@
 #include <linux/linkage.h>
 #include <asm/armv7.h>
 
+#define HPSC
 /*************************************************************************
  *
  * Startup Code (reset vector)
@@ -60,7 +61,6 @@ switch_to_hypervisor_ret:
 	orrne	r0, r0, #0x13		@ set SVC mode
 	orr	r0, r0, #0xc0		@ disable FIQ and IRQ
 	msr	cpsr,r0
-
 /*
  * Setup vector:
  * (OMAP4 spl TEXT_BASE is not 32 byte aligned.
@@ -87,6 +87,16 @@ switch_to_hypervisor_ret:
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT_ONLY
 	bl	cpu_init_crit
 #endif
+#endif
+#ifdef HPSC
+	// Enable EL1 access to all IMP DEF registers
+	LDR r0, =0x7F81
+	DSB
+	MCR p15, 4, r0, c1, c0, 1       // Write to HACTLR
+	ISB
+
+	bl	armv8r_switch_to_el1
+NEXT:
 #endif
 
 	bl	_main
@@ -334,4 +344,18 @@ ENTRY(cpu_init_crit)
 	 */
 	b	lowlevel_init		@ go setup pll,mux,memory
 ENDPROC(cpu_init_crit)
+
+#endif
+#ifdef HPSC
+ENTRY(armv8r_switch_to_el1)
+	MRS	r0, cpsr
+	MOV	r1, #0x13
+	BFI	r0, r1, #0, #5
+	MSR	spsr_hyp, r0
+	LDR	r0, =NEXT
+	MSR 	elr_hyp, r0
+	DSB
+	ISB
+	ERET
+ENDPROC(armv8r_switch_to_el1)
 #endif
