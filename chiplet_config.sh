@@ -1,0 +1,1 @@
+make hpsc_rtps_r52_defconfig
