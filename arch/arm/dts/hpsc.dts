@@ -189,14 +189,11 @@
 		#address-cells = <2>;
 		#size-cells = <1>;
 		ranges = <0 0 0 0 0xffffffff>;
-
-		gic: interrupt-controller@f9010000 {
-			compatible = "arm,gic-400", "arm,cortex-a15-gic"; /* TODO: gic-500 */
+		gic: interrupt-controller@f9000000 {
+			compatible = "arm,gic-v3"; 
 			#interrupt-cells = <3>;
-			reg = <0x0 0xf9010000 0x10000>,
-			      <0x0 0xf9020000 0x20000>,
-			      <0x0 0xf9040000 0x20000>,
-			      <0x0 0xf9060000 0x20000>;
+			reg = <0x0 0xf9000000 0x20000>,
+			      <0x0 0xf9100000 0x100000>;
 			interrupt-controller;
 			interrupt-parent = <&gic>;
 			interrupts = <1 9 0xf04>;
