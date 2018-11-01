@@ -110,18 +110,24 @@ ENTRY(gic_init_secure_percpu)
 	switch_el x10, 3f, 2f, 1f
 3:
 	/* Initialize Cpu Interface */
+#if ! defined(CONFIG_ARCH_HPSC_HPPS) && ! defined(CONFIG_ARCH_HPSC_RTPS_A53)  /* comment out by DK: because u-boot is now at EL2 */
 	mrs	x10, ICC_SRE_EL3
 	orr	x10, x10, #0xf		/* SRE & Disable IRQ/FIQ Bypass & */
 					/* Allow EL2 access to ICC_SRE_EL2 */
 	msr	ICC_SRE_EL3, x10
 	isb
 
+#endif
+
+#if ! defined(CONFIG_ARCH_HPSC_HPPS) && ! defined(CONFIG_ARCH_HPSC_RTPS_A53)  /* comment out by DK: because u-boot is now at EL2 */
 	mov	x10, #0x3		/* EnableGrp1NS | EnableGrp1S */
 	msr	ICC_IGRPEN1_EL3, x10
 	isb
 
 	msr	ICC_CTLR_EL3, xzr
 	isb
+#endif
+
 2:
 	mrs	x10, ICC_SRE_EL2
 	orr	x10, x10, #0xf		/* SRE & Disable IRQ/FIQ Bypass & */
