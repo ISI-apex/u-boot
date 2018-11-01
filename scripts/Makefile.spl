@@ -181,6 +181,17 @@ MKIMAGEFLAGS_boot.bin = -T zynqmpimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE) \
 	-n "$(shell cd $(srctree); readlink -f $(CONFIG_PMUFW_INIT_FILE))"
 endif
 
+ifdef CONFIG_ARCH_HPSC_HPPS
+ifneq ($(CONFIG_PMUFW_INIT_FILE),"")
+spl/boot.bin: zynqmp-check-pmufw
+zynqmp-check-pmufw: FORCE
+	( cd $(srctree) && test -r $(CONFIG_PMUFW_INIT_FILE) ) \
+		|| ( echo "Cannot read $(CONFIG_PMUFW_INIT_FILE)" && false )
+endif
+MKIMAGEFLAGS_boot.bin = -T zynqmpimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE) \
+	-n "$(shell cd $(srctree); readlink -f $(CONFIG_PMUFW_INIT_FILE))"
+endif
+
 spl/boot.bin: $(obj)/u-boot-spl.bin FORCE
 	$(call if_changed,mkimage)
 endif
@@ -211,6 +222,7 @@ ALL-$(CONFIG_SPL_X86_16BIT_INIT) += $(obj)/u-boot-x86-16bit-spl.bin
 
 ALL-$(CONFIG_ARCH_ZYNQ)		+= $(obj)/boot.bin
 ALL-$(CONFIG_ARCH_ZYNQMP)	+= $(obj)/boot.bin
+ALL-$(CONFIG_ARCH_HPSC_HPPS)	+= $(obj)/boot.bin
 
 all:	$(ALL-y)
 

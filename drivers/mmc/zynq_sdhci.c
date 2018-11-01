@@ -31,7 +31,7 @@ struct arasan_sdhci_priv {
 	bool pwrseq;
 };
 
-#if defined(CONFIG_ARCH_ZYNQMP)
+#if defined(CONFIG_ARCH_ZYNQMP) || defined(CONFIG_ARCH_HPSC_HPPS)
 #define MMC_HS200_BUS_SPEED	5
 
 static const u8 mode2timing[] = {
@@ -218,7 +218,7 @@ static void arasan_sdhci_set_control_reg(struct sdhci_host *host)
 }
 #endif
 
-#if defined(CONFIG_DM_MMC) && defined(CONFIG_ARCH_ZYNQMP)
+#if defined(CONFIG_DM_MMC) && (defined(CONFIG_ARCH_ZYNQMP) || defined(CONFIG_ARCH_HPSC_HPPS))
 const struct sdhci_ops arasan_ops = {
 	.platform_execute_tuning	= &arasan_sdhci_execute_tuning,
 	.set_delay = &arasan_sdhci_set_tapdelay,
@@ -293,7 +293,7 @@ static int arasan_sdhci_ofdata_to_platdata(struct udevice *dev)
 
 	priv->host->name = dev->name;
 
-#if defined(CONFIG_DM_MMC) && defined(CONFIG_ARCH_ZYNQMP)
+#if defined(CONFIG_DM_MMC) && (defined(CONFIG_ARCH_ZYNQMP) || defined(CONFIG_ARCH_HPSC_HPPS))
 	priv->host->ops = &arasan_ops;
 #endif
 

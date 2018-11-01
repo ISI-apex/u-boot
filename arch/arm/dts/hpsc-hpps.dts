@@ -1,0 +1,397 @@
+/*
+ * dts file for Xilinx ZynqMP ZCU102 RevA
+ *
+ * (C) Copyright 2015, Xilinx, Inc.
+ *
+ * Michal Simek <michal.simek@xilinx.com>
+ *
+ * SPDX-License-Identifier:	GPL-2.0+
+ */
+
+/dts-v1/;
+
+#include <dt-bindings/phy/phy.h>
+
+/ {
+	model = "HPSC";
+	compatible = "xlnx,zynqmp-zcu102-revA", "xlnx,zynqmp-zcu102", "xlnx,zynqmp";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	aliases {
+		ethernet0 = &xgmac;
+		serial0 = &uart0;
+		serial1 = &dcc;
+	};
+
+	chosen {
+		bootargs = "earlycon";
+		stdout-path = "serial0:115200n8";
+	};
+
+	memory@0 {
+		device_type = "memory";
+		reg = 
+		        /* NOTE: when changing this, remember to also change in Qemu DT */
+			<0x00 0x80000000 0x00 0x40000000>, /* DDR Low 1G */
+		        <0x01 0x00000000 0x00 0x40000000>;    /* TODO: DDR High 1G */
+		     /* <0x01 0x00000000 0x00 0x80000000>; */ /* TODO: DDR High 2G */
+	             /* <0x02 0x00000000 0x01 0x00000000>; */ /* TODO: DDR High 4G */
+	             /* <0x08 0x00000000 0x08 0x00000000>; */ /* TODO: DDR High 32G */
+	             /* <0x10 0x00000000 0x10 0x00000000>; */ /* TODO: DDR High 64G */
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu0: cpu@0 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			device_type = "cpu";
+			enable-method = "psci";
+			operating-points-v2 = <&cpu_opp_table>;
+			reg = <0x0>;
+			cpu-idle-states = <&CPU_SLEEP_0>;
+	                clocks = <&clkc 10>;
+		};
+
+		cpu1: cpu@1 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			device_type = "cpu";
+			enable-method = "psci";
+			reg = <0x1>;
+			operating-points-v2 = <&cpu_opp_table>;
+			cpu-idle-states = <&CPU_SLEEP_0>;
+		};
+
+		cpu2: cpu@2 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			device_type = "cpu";
+			enable-method = "psci";
+			reg = <0x2>;
+			operating-points-v2 = <&cpu_opp_table>;
+			cpu-idle-states = <&CPU_SLEEP_0>;
+		};
+
+		cpu3: cpu@3 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			device_type = "cpu";
+			enable-method = "psci";
+			reg = <0x3>;
+			operating-points-v2 = <&cpu_opp_table>;
+			cpu-idle-states = <&CPU_SLEEP_0>;
+		};
+
+		idle-states {
+			entry-method = "arm,psci";
+
+			CPU_SLEEP_0: cpu-sleep-0 {
+				compatible = "arm,idle-state";
+				arm,psci-suspend-param = <0x40000000>;
+				local-timer-stop;
+				entry-latency-us = <300>;
+				exit-latency-us = <600>;
+				min-residency-us = <10000>;
+			};
+		};
+	};
+
+	cpu_opp_table: cpu_opp_table {
+		compatible = "operating-points-v2";
+		opp-shared;
+		opp00 {
+			opp-hz = /bits/ 64 <1199999988>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+		opp01 {
+			opp-hz = /bits/ 64 <599999994>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+		opp02 {
+			opp-hz = /bits/ 64 <399999996>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+		opp03 {
+			opp-hz = /bits/ 64 <299999997>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+	};
+
+	dcc: dcc {
+		compatible = "arm,dcc";
+	        status = "okay";
+		u-boot,dm-pre-reloc;
+	};
+
+	power-domains {
+		compatible = "xlnx,zynqmp-genpd";
+
+		pd_uart0: pd-uart0 {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x21>;
+		};
+
+		pd_eth0: pd-eth0 {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x1d>;
+		};
+
+		pd_nand: pd-nand {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x2c>;
+		};
+
+		pd_pcie: pd-pcie {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x3b>;
+		};
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+		interrupt-parent = <&gic>;
+		interrupts = <0 143 4>,
+			     <0 144 4>,
+			     <0 145 4>,
+			     <0 146 4>;
+	};
+
+	psci {
+		compatible = "arm,psci-0.2";
+		method = "smc";
+	};
+
+	pmufw: firmware {
+		compatible = "xlnx,zynqmp-pm";
+		method = "smc";
+		interrupt-parent = <&gic>;
+		interrupts = <0 35 4>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupt-parent = <&gic>;
+		interrupts = <1 13 0xf08>,
+			     <1 14 0xf08>,
+			     <1 11 0xf08>,
+			     <1 10 0xf08>;
+	};
+
+	edac {
+		compatible = "arm,cortex-a53-edac";
+	};
+
+	amba_apu: amba_apu@0 {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <1>;
+		ranges = <0 0 0 0 0xffffffff>;
+		gic: interrupt-controller@f9000000 {
+			compatible = "arm,gic-v3"; 
+			#interrupt-cells = <3>;
+			reg = <0x0 0xf9000000 0x20000>,
+			      <0x0 0xf9100000 0x100000>;
+			interrupt-controller;
+			interrupt-parent = <&gic>;
+			interrupts = <1 9 0xf04>;
+		};
+	};
+
+	amba: amba {
+		compatible = "simple-bus";
+		u-boot,dm-pre-reloc;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		xgmac: ethernet@0xe5300000 {
+			compatible = "cdns,zynqmp-gem";
+	                status = "okay";
+			interrupt-parent = <&gic>;
+			interrupts = <0 57 4>, <0 57 4>;
+			reg = <0x0 0xe5300000 0x0 0x1000>;
+                        clocks = <&clkc 45>, <&clkc 45>, <&clkc 49>;
+                        clock-names = "pclk", "tx_clk", "hclk";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			#stream-id-cells = <1>;
+			iommus = <&smmu 0x874>;
+			power-domains = <&pd_eth0>;
+                        phy-handle = <&phy0>;
+                        phy-mode = "rgmii-id";
+                        phy0: phy@21 {
+                                reg = <21>;
+                                ti,rx-internal-delay = <0x8>;
+                                ti,tx-internal-delay = <0xa>;
+                                ti,fifo-depth = <0x1>;
+                                ti,rxctrl-strap-worka;
+                        };
+		};
+
+		pcie: pcie@0xe5330000 {
+			compatible = "xlnx,nwl-pcie-2.11";
+			status = "okay";
+			#address-cells = <3>;
+			#size-cells = <2>;
+			#interrupt-cells = <1>;
+			msi-controller;
+			device_type = "pci";
+			interrupt-parent = <&gic>;
+			interrupts = <0 118 4>,
+				     <0 117 4>,
+				     <0 116 4>,
+				     <0 115 4>,	/* MSI_1 [63...32] */
+				     <0 114 4>;	/* MSI_0 [31...0] */
+			interrupt-names = "misc","dummy","intx", "msi1", "msi0";
+			msi-parent = <&pcie>;
+			reg = <0x0 0xe5330000 0x0 0x1000>,
+			      <0x0 0xe56d0000 0x0 0x1000>,
+			      <0x80 0x00000000 0x0 0x1000000>;
+			reg-names = "breg", "pcireg", "cfg";
+			ranges = <0x02000000 0x00000000 0xe0000000 0x00000000 0xe0000000 0x00000000 0x10000000	/* non-prefetchable memory */
+				  0x43000000 0x00000006 0x00000000 0x00000006 0x00000000 0x00000002 0x00000000>;/* prefetchable memory */
+			bus-range = <0x00 0xff>;
+			interrupt-map-mask = <0x0 0x0 0x0 0x7>;
+			interrupt-map = <0x0 0x0 0x0 0x1 &pcie_intc 0x1>,
+					<0x0 0x0 0x0 0x2 &pcie_intc 0x2>,
+					<0x0 0x0 0x0 0x3 &pcie_intc 0x3>,
+					<0x0 0x0 0x0 0x4 &pcie_intc 0x4>;
+			power-domains = <&pd_pcie>;
+	                clocks = <&clkc 23>;
+			pcie_intc: legacy-interrupt-controller {
+				interrupt-controller;
+				#address-cells = <0>;
+				#interrupt-cells = <1>;
+			};
+		};
+
+		smcc: memory-controller@f92d0000 {
+			#address-cells = <1>;
+			#size-cells = <1>;
+			status = "okay";
+			clock-names = "memclk", "aclk";
+/*			clocks = <&clkc 11>, <&clkc 44>; */
+			compatible = "arm,pl353-smc-r2p1";
+			interrupt-parent = <&gic>;
+			interrupts = <0 18 4>;
+
+			arm,addr25 = <0x1>;
+			arm,nor-chip-sel0 = <0x1>;
+			arm,nor-chip-sel1 = <0x0>;
+			arm,sram-chip-sel0 = <0x0>;
+			arm,sram-chip-sel1 = <0x0>;
+
+			ranges ;
+			reg = <0xf92d0000 0x1000>;
+			nand0: flash@e1000000 {
+				status = "disabled";
+				compatible = "arm,pl353-nand-r2p1";
+				reg = <0xe1000000 0x1000000>;
+				#address-cells = <0x1>;
+				#size-cells = <0x1>;
+				#stream-id-cells = <1>;
+			};
+			nor0: flash@e2000000 {
+				status = "disabled";
+				compatible = "cfi-flash";
+				reg = <0xe2000000 0x2000000>;
+				#address-cells = <1>;
+				#size-cells = <1>;
+			};
+		};
+
+		smmu: smmu@0xf92f2000 {
+			compatible = "arm,mmu-500";
+			reg = <0x0 0xf92f2000 0x0 0x20000>;
+			#iommu-cells = <1>;
+			status = "disabled";
+			#global-interrupts = <1>;
+			interrupt-parent = <&gic>;
+			interrupts = <0 155 4>,
+				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>,
+				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>,
+				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>,
+				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>;
+		};
+
+		uart0: serial@f92c0000 {
+			u-boot,dm-pre-reloc;
+			compatible = "cdns,uart-r1p12", "xlnx,xuartps";
+			status = "okay";
+			interrupt-parent = <&gic>;
+			interrupts = <0 23 4>;
+			reg = <0x0 0xf92c0000 0x0 0x1000>;
+	                clocks = <&clkc 56>,  <&clkc 31>;
+			clock-names = "uart_clk", "pclk";
+			power-domains = <&pd_uart0>;
+		};
+	};
+
+	pss_ref_clk: pss_ref_clk {
+		u-boot,dm-pre-reloc;
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <33333333>;
+	};
+
+	video_clk: video_clk {
+		u-boot,dm-pre-reloc;
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <27000000>;
+	};
+
+	pss_alt_ref_clk: pss_alt_ref_clk {
+		u-boot,dm-pre-reloc;
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <0>;
+	};
+
+	gt_crx_ref_clk: gt_crx_ref_clk {
+		u-boot,dm-pre-reloc;
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <108000000>;
+	};
+
+	aux_ref_clk: aux_ref_clk {
+		u-boot,dm-pre-reloc;
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <27000000>;
+	};
+
+	clkc: clkc {
+		u-boot,dm-pre-reloc;
+		#clock-cells = <1>;
+		compatible = "xlnx,zynqmp-clkc";
+		clocks = <&pss_ref_clk>, <&video_clk>, <&pss_alt_ref_clk>, <&aux_ref_clk>, <&gt_crx_ref_clk>;
+		clock-names = "pss_ref_clk", "video_clk", "pss_alt_ref_clk", "aux_ref_clk", "gt_crx_ref_clk";
+		clock-output-names = "iopll", "rpll", "apll", "dpll",
+				"vpll", "iopll_to_fpd", "rpll_to_fpd",
+				"apll_to_lpd", "dpll_to_lpd", "vpll_to_lpd",
+				"acpu", "acpu_half", "dbf_fpd", "dbf_lpd",
+				"dbg_trace", "dbg_tstmp", "dp_video_ref",
+				"dp_audio_ref", "dp_stc_ref", "gdma_ref",
+				"dpdma_ref", "ddr_ref", "sata_ref", "pcie_ref",
+				"gpu_ref", "gpu_pp0_ref", "gpu_pp1_ref",
+				"topsw_main", "topsw_lsbus", "gtgref0_ref",
+				"lpd_switch", "lpd_lsbus", "usb0_bus_ref",
+				"usb1_bus_ref", "usb3_dual_ref", "usb0",
+				"usb1", "cpu_r5", "cpu_r5_core", "csu_spb",
+				"csu_pll", "pcap", "iou_switch", "gem_tsu_ref",
+				"gem_tsu", "gem0_ref", "gem1_ref", "gem2_ref",
+				"gem3_ref", "gem0_tx", "gem1_tx", "gem2_tx",
+				"gem3_tx", "qspi_ref", "sdio0_ref", "sdio1_ref",
+				"uart0_ref", "uart1_ref", "spi0_ref",
+				"spi1_ref", "nand_ref", "i2c0_ref", "i2c1_ref",
+				"can0_ref", "can1_ref", "can0", "can1",
+				"dll_ref", "adma_ref", "timestamp_ref",
+				"ams_ref", "pl0", "pl1", "pl2", "pl3", "wdt";
+	};
+};

@@ -34,7 +34,7 @@ config FASTBOOT_BUF_ADDR
 	default 0x800800 if ROCKCHIP_RK3288 || ROCKCHIP_RK3329 || \
 				ROCKCHIP_RK3399
 	default 0x280000 if ROCKCHIP_RK3368
-	default 0x100000 if ARCH_ZYNQMP
+	default 0x100000 if ARCH_ZYNQMP || ARCH_HPSC_HPPS
 	help
 	  The fastboot protocol requires a large memory buffer for
 	  downloads. Define this to the starting RAM address to use for
@@ -43,7 +43,7 @@ config FASTBOOT_BUF_ADDR
 config FASTBOOT_BUF_SIZE
 	hex "Define FASTBOOT buffer size"
 	default 0x8000000 if ARCH_ROCKCHIP
-	default 0x6000000 if ARCH_ZYNQMP
+	default 0x6000000 if ARCH_ZYNQMP || ARCH_HPSC_HPPS
 	default 0x2000000 if ARCH_SUNXI
 	default 0x7000000
 	help

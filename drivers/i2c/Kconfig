@@ -445,7 +445,7 @@ config SYS_I2C_BUS_MAX
 
 config SYS_I2C_ZYNQ
 	bool "Xilinx I2C driver"
-	depends on ARCH_ZYNQMP || ARCH_ZYNQ
+	depends on ARCH_ZYNQMP || ARCH_ZYNQ || ARCH_HPSC_HPPS
 	help
 	  Support for Xilinx I2C controller.
 

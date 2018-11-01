@@ -8,7 +8,7 @@
 #ifndef __ZYNQMP_TAP_DELAY_H__
 #define __ZYNQMP_TAP_DELAY_H__
 
-#ifdef CONFIG_ARCH_ZYNQMP
+#if defined(CONFIG_ARCH_ZYNQMP) || defined(CONFIG_ARCH_HPSC_HPPS)
 void zynqmp_dll_reset(u8 deviceid);
 void arasan_zynqmp_set_tapdelay(u8 device_id, u8 uhsmode, u8 bank);
 #else

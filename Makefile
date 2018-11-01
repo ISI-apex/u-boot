@@ -744,13 +744,15 @@ u-boot-init := $(head-y)
 u-boot-main := $(libs-y)
 
 
-# Add GCC lib
+# Add GCC lib # commented by DK
+ifeq ($(CONFIG_LD_GCC), y)
 ifeq ($(CONFIG_USE_PRIVATE_LIBGCC),y)
 PLATFORM_LIBGCC = arch/$(ARCH)/lib/lib.a
 else
 PLATFORM_LIBGCC := -L $(shell dirname `$(CC) $(c_flags) -print-libgcc-file-name`) -lgcc
 endif
 PLATFORM_LIBS += $(PLATFORM_LIBGCC)
+endif
 
 ifdef CONFIG_CC_COVERAGE
 KBUILD_CFLAGS += --coverage
