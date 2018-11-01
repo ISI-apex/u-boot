@@ -11,21 +11,19 @@
 #define __HPSC_HPPS_H
 
 #define CONFIG_REMAKE_ELF
-/* #define HPSC */
 
 /* #define CONFIG_ARMV8_SWITCH_TO_EL1 */
 
 /* Generic Interrupt Controller Definitions */
-#ifdef HPSC
 #define CONFIG_GICV3
 #define GICD_BASE	0xF9000000
 #define GICR_BASE	0xF9100000
-#else
+/*
 #define CONFIG_GICV2
 #define GICD_BASE	0xF9010000
 #define GICC_BASE	0xF9020000
 #endif
-
+*/
 #ifndef CONFIG_SYS_MEMTEST_SCRATCH
 # define CONFIG_SYS_MEMTEST_SCRATCH	0x10800000
 #endif
