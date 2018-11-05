@@ -192,7 +192,7 @@
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"kernel_addr=0x80080000\0" \
-	"initrd_addr=0x84800000\0" \
+	"initrd_addr=0x90000000\0" \
 	"initrd_size=0x2000000\0" \
 	"fdt_addr=0x84000000\0" \
 	"fdt_high=0x90000000\0" \
