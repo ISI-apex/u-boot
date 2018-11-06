@@ -32,6 +32,9 @@ struct mpu_region_config el2_region_config[] = {
 	{ 0xF8000000, 0xFFFFFFC0, REGION_7, XN_EN, PRIV_RW_USR_RW,	/* HPSC Device 2*/
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
+	{ 0x00000000, 0x600000, REGION_8, XN_DIS, PRIV_RW_USR_RW,	/* TCMS - need to revisit */
+	    SH_NONE, AttrIndex1, ENABLE,
+ 	  },
 };
 struct mpu_region_config el1_region_config[] = {
 	{ 0x28000000, 0x307FFFC0, REGION_0, XN_EN, PRIV_RW_USR_RW,	/* LSIO */
@@ -56,6 +59,9 @@ struct mpu_region_config el1_region_config[] = {
 	    SH_NONE, AttrIndex1, ENABLE,
 	  },
 	{ 0xF8000000, 0xFFFFFFC0, REGION_7, XN_EN, PRIV_RW_USR_RW,	/* HPSC Device 2*/
+	    SH_NONE, AttrIndex1, ENABLE,
+ 	  },
+	{ 0x00000000, 0x600000, REGION_8, XN_DIS, PRIV_RW_USR_RW,	/* TCMS - need to revisit */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
 };
