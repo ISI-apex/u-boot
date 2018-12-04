@@ -68,6 +68,10 @@
 /* Miscellaneous configurable options */
 #define CONFIG_SYS_LOAD_ADDR		0x8000000
 
+#if defined(CONFIG_BOOT_MODE_IN_RAM)
+#define BOOT_MODE_ADDRESS 0x9f000000
+#endif
+
 #if defined(CONFIG_ZYNQMP_USB)
 #define CONFIG_SYS_DFU_DATA_BUF_SIZE	0x1800000
 #define DFU_DEFAULT_POLL_TIMEOUT	300
@@ -91,6 +95,7 @@
 	"name=""Linux"",size=-M,uuid=${uuid_gpt_Linux}\0"
 #endif
 #endif
+
 
 #if !defined(DFU_ALT_INFO)
 # define DFU_ALT_INFO
@@ -185,6 +190,12 @@
 	"fdt_addr=0x84000000\0" \
 	"jtagboot=run jtagmemboot\0" \
         "jtagmemboot= booti $kernel_addr $initrd_addr $fdt_addr\0" \
+	"bootk=" \
+		"booti $kernel_addr - $fdt_addr\0" \
+	"nandrootfs=" \
+		"env set bootargs root=/dev/mtdblock0 rw " \
+		"rootfstype=jffs2 " \
+		"; run bootk \0" \
 	PARTS_DEFAULT \
 	DFU_ALT_INFO
 #endif

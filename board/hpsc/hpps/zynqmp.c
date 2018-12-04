@@ -525,7 +525,13 @@ int board_late_init(void)
 		return 0;
 	}
 
-	ret = zynqmp_mmio_read((ulong)&crlapb_base->boot_mode, &reg);
+	// ret = zynqmp_mmio_read((ulong)&crlapb_base->boot_mode, &reg);
+#if defined(CONFIG_BOOT_MODE_IN_RAM)
+	ret = zynqmp_mmio_read((ulong)BOOT_MODE_ADDRESS, &reg);
+#else
+	reg = 0; ret = 0;
+#endif
+printf("DK: reg = 0x%x\n", reg);
 	if (ret)
 		return -EINVAL;
 
@@ -533,7 +539,6 @@ int board_late_init(void)
 		reg >>= BOOT_MODE_ALT_SHIFT;
 
 	bootmode = reg & BOOT_MODES_MASK;
-
 	puts("Bootmode: ");
 	switch (bootmode) {
 	case USB_MODE:
@@ -545,6 +550,11 @@ int board_late_init(void)
 		puts("JTAG_MODE\n");
 		mode = "pxe dhcp";
 		env_set("modeboot", "jtagboot");
+		break;
+	case NAND_ROOTFS_MODE:
+		puts("NAND_ROOTFS_MODE\n");
+		mode = "pxe dhcp";
+		env_set("modeboot", "nandrootfs");
 		break;
 	case QSPI_MODE_24BIT:
 	case QSPI_MODE_32BIT:

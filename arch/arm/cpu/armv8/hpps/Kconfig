@@ -88,6 +88,11 @@ config ZYNQMP_PSU_INIT_ENABLED
 	help
 	  Include psu_init to full u-boot. SPL include psu_init by default.
 
+config BOOT_MODE_IN_RAM
+	bool "BOOT_MODE_IN_RAM"
+	help
+	  Write bootmode in RAM area (CONFIG_BOOT_MODE_ADDRESS)
+
 config SPL_ZYNQMP_ALT_BOOTMODE_ENABLED
 	bool "Overwrite SPL bootmode"
 	depends on SPL
@@ -111,6 +116,7 @@ config SPL_ZYNQMP_ALT_BOOTMODE
 	default 0xa if SW_USBHOST_MODE_HPSC
 	default 0xb if SW_SATA_MODE_HPSC
 	default 0xe if SD1_LSHFT_MODE_HPSC
+	default 0xf if BOOT_MODE_IN_RAM 
 
 choice
 	prompt "Boot mode"
