@@ -244,7 +244,7 @@ unsigned int zynqmp_pmufw_version(void)
 
 #ifdef HPSC
 	printf("HPSC: PMUFW is skipped\n");
-	return;
+	return 0;
 #endif
 		if (ret)
 			panic("PMUFW is not found - Please load it!\n");
@@ -297,7 +297,6 @@ int zynqmp_mmio_write(const u32 address,
 
 int zynqmp_mmio_read(const u32 address, u32 *value)
 {
-	u32 ret_payload[PAYLOAD_ARG_CNT];
 	u32 ret;
 
 	if (!value)
@@ -306,6 +305,8 @@ int zynqmp_mmio_read(const u32 address, u32 *value)
 #ifdef HPSC_NON_SMC // When TRCH handles power management, this should be fixed
 	ret = zynqmp_mmio_rawread(address, value);
 #else
+	u32 ret_payload[PAYLOAD_ARG_CNT];
+
 	if (IS_ENABLED(CONFIG_SPL_BUILD) || current_el() == 3) {
 		ret = zynqmp_mmio_rawread(address, value);
 	} else {
