@@ -8,6 +8,8 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS
 
+#define CONFIG_REMAKE_ELF
+
 /* CPU clock */
 #define CONFIG_CPU_FREQ_HZ	500000000
 
