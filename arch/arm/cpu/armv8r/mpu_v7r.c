@@ -63,8 +63,8 @@ void mpu_config(struct mpu_region_config *rgn)
 
 	/* MPU Region Size and Enable Register */
 	if (rgn->start_addr < rgn->end_addr) {
-		bar = rgn->start_addr & ~(REGION_ADDR_SHIFT - 1) | rgn->sh << S_SHIFT | rgn->ap << AP_SHIFT | rgn->xn << XN_SHIFT;
-		lar = rgn->end_addr & ~(REGION_ADDR_SHIFT - 1) | rgn->attr << ATTR_SHIFT | rgn->enable << EN_SHIFT;
+		bar = (rgn->start_addr & ~(REGION_ADDR_SHIFT - 1)) | (rgn->sh << S_SHIFT) | (rgn->ap << AP_SHIFT) | (rgn->xn << XN_SHIFT);
+		lar = (rgn->end_addr & ~(REGION_ADDR_SHIFT - 1)) | (rgn->attr << ATTR_SHIFT) | (rgn->enable << EN_SHIFT);
 	} else {
 		bar = 0;
 		lar = 0 << EN_SHIFT;
@@ -238,12 +238,6 @@ void mpu_config(struct mpu_region_config *rgn)
 	} 
 }
 
-int kk = 0;
-void foo(int j)
-{
-	kk += j * 200;
-}
-
 void setup_mpu_regions(struct mpu_region_config *rgns, u32 num_rgns)
 {
 	u32 num, i;
@@ -260,11 +254,6 @@ void setup_mpu_regions(struct mpu_region_config *rgns, u32 num_rgns)
 	icache_disable();
 	invalidate_icache_all();
 
-#define DK
-#ifdef DK
-		flush_dcache_all();
-		invalidate_icache_all();
-#endif
 	disable_mpu();
 
 	for (i = 0; i < num_rgns; i++)
@@ -272,21 +261,7 @@ void setup_mpu_regions(struct mpu_region_config *rgns, u32 num_rgns)
 
 	enable_mpu();
 
-#ifdef DK
-	int j;
-	j = j * 100;
-	foo(j);
-	if (!icache_status()) {
-	uint32_t sctl;
-        asm volatile ("MRC     p15, 0, %0, c1, c0, 0" : "=r" (sctl));       // read System Control Register
-        asm volatile ("ORR     %0, %0, #(0x1 << 12)" : "=r" (sctl) );        // enable I Cache
-//        asm volatile ("ORR     r0, r0, #(0x1 << 2)");         // enable D Cache
-        asm volatile ("MCR     p15, 0, %0, c1, c0, 0" : : "r" (sctl));       // write System Control Register
-        asm volatile ("ISB");
-	}
-#else
 	icache_enable();
-#endif
 }
 
 void enable_caches(void)
