@@ -53,15 +53,7 @@
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;
-/*
-		ttc0: timer@30A04000{
-			compatible = "cdns,ttc";
-			status = "okay";
-			reg = <0x30A04000 0x1000>;
-			timer-width = <32>;
-			clocks = <&clk100>;
-		};
-*/
+
 		uart1: serial@30001000 {
 			u-boot,dm-pre-reloc;
 			compatible = "cdns,uart-r1p12", "xlnx,xuartps";
