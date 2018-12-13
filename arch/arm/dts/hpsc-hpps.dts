@@ -12,6 +12,18 @@
 
 #include <dt-bindings/phy/phy.h>
 
+/* Copies from Qemu Device Tree repo */
+#include "hpsc-irqs.dtsh"
+#include "hpsc-busids.dtsh"
+
+#define GIC_SPI 0
+#define GIC_PPI 1
+#define GIC_EDGE_RISE 1
+#define GIC_EDGE_FALL 2
+#define GIC_EDGE_BOTH 3
+#define GIC_LVL_HI 4
+#define GIC_LVL_LO 8
+
 / {
 	model = "HPSC";
 	compatible = "xlnx,zynqmp-zcu102-revA", "xlnx,zynqmp-zcu102", "xlnx,zynqmp";
@@ -52,7 +64,6 @@
 			operating-points-v2 = <&cpu_opp_table>;
 			reg = <0x0>;
 			cpu-idle-states = <&CPU_SLEEP_0>;
-	                clocks = <&clkc 10>;
 		};
 
 		cpul1: cpu@1 {
@@ -191,10 +202,16 @@
 	pmu {
 		compatible = "arm,armv8-pmuv3";
 		interrupt-parent = <&gic>;
-		interrupts = <0 143 4>,
-			     <0 144 4>,
-			     <0 145 4>,
-			     <0 146 4>;
+		interrupts = <GIC_SPI HPPS_IRQ__PMU_0 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_1 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_2 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_3 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_4 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_5 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_6 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_7 GIC_LVL_HI>;
+		interrupt-affinity = <&cpul0>, <&cpul1>, <&cpul2>, <&cpul3>,
+                                     <&cpub0>, <&cpub1>, <&cpub2>, <&cpub3>;
 	};
 
 	psci {
@@ -202,20 +219,13 @@
 		method = "smc";
 	};
 
-	pmufw: firmware {
-		compatible = "xlnx,zynqmp-pm";
-		method = "smc";
-		interrupt-parent = <&gic>;
-		interrupts = <0 35 4>;
-	};
-
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupt-parent = <&gic>;
-		interrupts = <1 13 0xf08>,
-			     <1 14 0xf08>,
-			     <1 11 0xf08>,
-			     <1 10 0xf08>;
+		interrupts = <GIC_PPI PPI_IRQ__TIMER_SEC  GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_PHYS GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_VIRT GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_HYP  GIC_LVL_LO>;
 	};
 
 	edac {
@@ -234,7 +244,7 @@
 			      <0x0 0xf9100000 0x100000>;
 			interrupt-controller;
 			interrupt-parent = <&gic>;
-			interrupts = <1 9 0xf04>;
+			interrupts = <GIC_PPI PPI_IRQ__GIC_MAINT GIC_LVL_HI>;
 		};
 	};
 
@@ -249,26 +259,27 @@
 			compatible = "cdns,zynqmp-gem";
 	                status = "okay";
 			interrupt-parent = <&gic>;
-			interrupts = <0 57 4>, <0 57 4>;
+			interrupts = <GIC_SPI HPPS_IRQ__XGMAC      GIC_LVL_HI>,
+                                     <GIC_SPI HPPS_IRQ__XGMAC_WAKE GIC_LVL_HI>;
 			reg = <0x0 0xe5300000 0x0 0x1000>;
-                        clocks = <&clkc 45>, <&clkc 45>, <&clkc 49>;
+			clocks = <&clk125>, <&clk125>, <&clk125>;
                         clock-names = "pclk", "tx_clk", "hclk";
 			#address-cells = <1>;
 			#size-cells = <0>;
-			#stream-id-cells = <1>;
-			iommus = <&smmu 0x874>;
+			iommus = <&smmu MASTER_ID_XGMAC>;
 			power-domains = <&pd_eth0>;
                         phy-handle = <&phy0>;
                         phy-mode = "rgmii-id";
-                        phy0: phy@21 {
-                                reg = <21>;
-                                ti,rx-internal-delay = <0x8>;
-                                ti,tx-internal-delay = <0xa>;
-                                ti,fifo-depth = <0x1>;
-                                ti,rxctrl-strap-worka;
-                        };
+			phy0: phy@7 {
+				reg = <7>;
+				ti,rx-internal-delay = <0x8>;
+				ti,tx-internal-delay = <0xa>;
+				ti,fifo-depth = <0x1>;
+				ti,rxctrl-strap-worka;
+			};
 		};
 
+#if 0 /* TODO */
 		pcie: pcie@0xe5330000 {
 			compatible = "xlnx,nwl-pcie-2.11";
 			status = "okay";
@@ -278,11 +289,11 @@
 			msi-controller;
 			device_type = "pci";
 			interrupt-parent = <&gic>;
-			interrupts = <0 118 4>,
-				     <0 117 4>,
-				     <0 116 4>,
-				     <0 115 4>,	/* MSI_1 [63...32] */
-				     <0 114 4>;	/* MSI_0 [31...0] */
+			interrupts = <GIC_SPI ? GIC_LVL_HI>,
+				     <GIC_SPI ? GIC_LVL_HI>,
+				     <GIC_SPI ? GIC_LVL_HI>,
+				     <GIC_SPI ? GIC_LVL_HI>,	/* MSI_1 [63...32] */
+				     <GIC_SPI ? GIC_LVL_HI>;	/* MSI_0 [31...0] */
 			interrupt-names = "misc","dummy","intx", "msi1", "msi0";
 			msi-parent = <&pcie>;
 			reg = <0x0 0xe5330000 0x0 0x1000>,
@@ -298,137 +309,92 @@
 					<0x0 0x0 0x0 0x3 &pcie_intc 0x3>,
 					<0x0 0x0 0x0 0x4 &pcie_intc 0x4>;
 			power-domains = <&pd_pcie>;
-	                clocks = <&clkc 23>;
+	                /* clocks = <&clkc 23>; */
 			pcie_intc: legacy-interrupt-controller {
 				interrupt-controller;
 				#address-cells = <0>;
 				#interrupt-cells = <1>;
 			};
 		};
+#endif
 
-		smcc: memory-controller@f92d0000 {
-			#address-cells = <1>;
-			#size-cells = <1>;
+		smcc: smcc-memory-controller@f92d0000 {
+			#address-cells = <2>;
+			#size-cells = <2>; 
 			status = "okay";
-			clock-names = "memclk", "aclk";
-/*			clocks = <&clkc 11>, <&clkc 44>; */
+			clocks = <&clk100>, <&clk125>;
+			clock-names = "aclk", "memclk";
+			/* iommus = <&smmu MASTER_ID_SMC>; */ /* not connected to an MMU TBU */
 			compatible = "arm,pl353-smc-r2p1";
 			interrupt-parent = <&gic>;
-			interrupts = <0 18 4>;
-
-			arm,addr25 = <0x1>;
-			arm,nor-chip-sel0 = <0x1>;
-			arm,nor-chip-sel1 = <0x0>;
-			arm,sram-chip-sel0 = <0x0>;
-			arm,sram-chip-sel1 = <0x0>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC GIC_LVL_HI>;
 
 			ranges ;
-			reg = <0xf92d0000 0x1000>;
-			nand0: flash@e1000000 {
-				status = "disabled";
+			reg = <0x0 0xf92d0000 0x0 0x1000>;
+			nand0: nand0@600000000 {
+				status = "okay";
 				compatible = "arm,pl353-nand-r2p1";
-				reg = <0xe1000000 0x1000000>;
-				#address-cells = <0x1>;
+				reg = <0x6 0x0 0x0 0x20000000>;
+				#address-cells = <0x2>;
 				#size-cells = <0x1>;
-				#stream-id-cells = <1>;
+				power-domains = <&pd_nand>;
 			};
 			nor0: flash@e2000000 {
 				status = "disabled";
 				compatible = "cfi-flash";
-				reg = <0xe2000000 0x2000000>;
-				#address-cells = <1>;
-				#size-cells = <1>;
+				reg = <0x6 0x20000000 0x0 0xE0000000>;
+				#address-cells = <0x2>;
+				#size-cells = <0x2>;
 			};
 		};
 
-		smmu: smmu@0xf92f2000 {
+		smmu: smmu@f9300000 {
 			compatible = "arm,mmu-500";
-			reg = <0x0 0xf92f2000 0x0 0x20000>;
+			reg = <0x0 0xf9300000 0x0 0x20000>;
 			#iommu-cells = <1>;
-			status = "disabled";
 			#global-interrupts = <1>;
 			interrupt-parent = <&gic>;
-			interrupts = <0 155 4>,
-				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>,
-				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>,
-				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>,
-				<0 155 4>, <0 155 4>, <0 155 4>, <0 155 4>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMMU_GLOB GIC_LVL_HI>, /* global irq */
+                                /* context IRQs */
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_0 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_1 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_2 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_3 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_4 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_5 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_6 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_7 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_8 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_9 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_10 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_11 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_12 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_13 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_14 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_15 GIC_LVL_HI>;
 		};
 
 		uart0: serial@f92c0000 {
-			u-boot,dm-pre-reloc;
 			compatible = "cdns,uart-r1p12", "xlnx,xuartps";
 			status = "okay";
 			interrupt-parent = <&gic>;
-			interrupts = <0 23 4>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_UART0_0 GIC_LVL_HI>;
 			reg = <0x0 0xf92c0000 0x0 0x1000>;
-	                clocks = <&clkc 56>,  <&clkc 31>;
+			clocks = <&clk100 &clk100>;
 			clock-names = "uart_clk", "pclk";
 			power-domains = <&pd_uart0>;
 		};
 	};
 
-	pss_ref_clk: pss_ref_clk {
-		u-boot,dm-pre-reloc;
+	clk100: clk100 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
-		clock-frequency = <33333333>;
-	};
-
-	video_clk: video_clk {
+		clock-frequency = <100000000>;
 		u-boot,dm-pre-reloc;
+	};
+	clk125: clk125 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
-		clock-frequency = <27000000>;
-	};
-
-	pss_alt_ref_clk: pss_alt_ref_clk {
-		u-boot,dm-pre-reloc;
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <0>;
-	};
-
-	gt_crx_ref_clk: gt_crx_ref_clk {
-		u-boot,dm-pre-reloc;
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <108000000>;
-	};
-
-	aux_ref_clk: aux_ref_clk {
-		u-boot,dm-pre-reloc;
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <27000000>;
-	};
-
-	clkc: clkc {
-		u-boot,dm-pre-reloc;
-		#clock-cells = <1>;
-		compatible = "xlnx,zynqmp-clkc";
-		clocks = <&pss_ref_clk>, <&video_clk>, <&pss_alt_ref_clk>, <&aux_ref_clk>, <&gt_crx_ref_clk>;
-		clock-names = "pss_ref_clk", "video_clk", "pss_alt_ref_clk", "aux_ref_clk", "gt_crx_ref_clk";
-		clock-output-names = "iopll", "rpll", "apll", "dpll",
-				"vpll", "iopll_to_fpd", "rpll_to_fpd",
-				"apll_to_lpd", "dpll_to_lpd", "vpll_to_lpd",
-				"acpu", "acpu_half", "dbf_fpd", "dbf_lpd",
-				"dbg_trace", "dbg_tstmp", "dp_video_ref",
-				"dp_audio_ref", "dp_stc_ref", "gdma_ref",
-				"dpdma_ref", "ddr_ref", "sata_ref", "pcie_ref",
-				"gpu_ref", "gpu_pp0_ref", "gpu_pp1_ref",
-				"topsw_main", "topsw_lsbus", "gtgref0_ref",
-				"lpd_switch", "lpd_lsbus", "usb0_bus_ref",
-				"usb1_bus_ref", "usb3_dual_ref", "usb0",
-				"usb1", "cpu_r5", "cpu_r5_core", "csu_spb",
-				"csu_pll", "pcap", "iou_switch", "gem_tsu_ref",
-				"gem_tsu", "gem0_ref", "gem1_ref", "gem2_ref",
-				"gem3_ref", "gem0_tx", "gem1_tx", "gem2_tx",
-				"gem3_tx", "qspi_ref", "sdio0_ref", "sdio1_ref",
-				"uart0_ref", "uart1_ref", "spi0_ref",
-				"spi1_ref", "nand_ref", "i2c0_ref", "i2c1_ref",
-				"can0_ref", "can1_ref", "can0", "can1",
-				"dll_ref", "adma_ref", "timestamp_ref",
-				"ams_ref", "pl0", "pl1", "pl2", "pl3", "wdt";
+		clock-frequency = <125000000>;
 	};
 };
