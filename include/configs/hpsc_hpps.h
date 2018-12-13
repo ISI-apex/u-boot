@@ -185,11 +185,12 @@
 
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS \
+	"compressed_kernel_addr=0x81080000\0" \
 	"kernel_addr=0x80080000\0" \
 	"initrd_addr=0x90000000\0" \
 	"fdt_addr=0x84000000\0" \
 	"jtagboot=run jtagmemboot\0" \
-        "jtagmemboot= booti $kernel_addr $initrd_addr $fdt_addr\0" \
+        "jtagmemboot= bootm $compressed_kernel_addr $initrd_addr $fdt_addr\0" \
 	"bootk=" \
 		"booti $kernel_addr - $fdt_addr\0" \
 	"nandrootfs=" \
