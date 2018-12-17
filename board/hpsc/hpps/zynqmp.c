@@ -531,7 +531,6 @@ int board_late_init(void)
 #else
 	reg = 0; ret = 0;
 #endif
-printf("DK: reg = 0x%x\n", reg);
 	if (ret)
 		return -EINVAL;
 
@@ -641,6 +640,6 @@ printf("DK: reg = 0x%x\n", reg);
 
 int checkboard(void)
 {
-	puts("Board: Xilinx ZynqMP\n");
+	puts("Board: HPSC Qemu Development Platform\n");
 	return 0;
 }
