@@ -16,8 +16,4 @@ ifneq ($(CONFIG_SKIP_LOWLEVEL_INIT),y)
 obj-y	+= lowlevel_init.o
 endif
 
-obj-$(CONFIG_ARM_SMCCC)		+= smccc-call.o
-obj-$(CONFIG_ARMV7_NONSEC)	+= nonsec_virt.o virt-v7.o virt-dt.o
-obj-$(CONFIG_ARMV7_PSCI)	+= psci.o psci-common.o
-
 obj-$(CONFIG_SYS_ARCH_TIMER) += arch_timer.o
