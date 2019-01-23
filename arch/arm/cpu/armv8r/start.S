@@ -68,6 +68,15 @@ switch_to_hypervisor_ret:
 	mcr	p15, 0, r0, c12, c0, 0	@Set VBAR
 #endif
 
+/* Check if ARM Generic Timer is present, and if so, set CNTFRQ */
+#ifdef COUNTER_FREQUENCY
+	mrc	p15, 0, r0, c0, c1, 1		@ read ID_PFR1
+	and	r0, r0, #CPUID_ARM_GENTIMER_MASK	@ mask arch timer bits
+	cmp	r0, #(1 << CPUID_ARM_GENTIMER_SHIFT)
+	ldreq	r1, =COUNTER_FREQUENCY
+	mcreq	p15, 0, r1, c14, c0, 0		@ write CNTFRQ
+#endif /* COUNTER_FREQUENCY */
+
 	/* Enable EL1 access to all IMP DEF registers */
 	LDR r0, =0x7F81
 	DSB
