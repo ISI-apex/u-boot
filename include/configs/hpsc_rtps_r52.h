@@ -13,6 +13,9 @@
 /* CPU clock */
 #define CONFIG_CPU_FREQ_HZ	500000000
 
+/* System Counter (aka. Elapsed Timer): backend to ARM Generic Timers */
+#define COUNTER_FREQUENCY        62500000
+
 /* Serial drivers */
 /* The following table includes the supported baudrates */
 #define CONFIG_SYS_BAUDRATE_TABLE  \
