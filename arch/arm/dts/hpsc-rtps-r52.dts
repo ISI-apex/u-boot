@@ -92,11 +92,13 @@
 		ranges;
 
 		uart1: serial@30001000 {
-			u-boot,dm-pre-reloc;
-			compatible = "cdns,uart-r1p12", "xlnx,xuartps";
+			compatible = "snps,dw-apb-uart";
+			status = "okay";
 			reg = <0x30001000 0x1000>;
-			clock-names = "uart_clk", "pclk";
+			reg-offset = <0>;
+			reg-shift = <2>; /* register width: 4-byte = 32-bit */
 			clocks = <&clk100 &clk100>;
+			clock-names = "uart_clk", "pclk";
 		};
 	};
 };
