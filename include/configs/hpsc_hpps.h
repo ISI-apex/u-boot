@@ -192,12 +192,10 @@
         "bootargs=earlycon=uart8250,mmio32,0xF92C0000,115200n8 console=ttyS0,115200n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
         "jtagmemboot= bootm $compressed_kernel_addr $initrd_addr $fdt_addr\0" \
-	"bootk=" \
-		"booti $kernel_addr - $fdt_addr\0" \
 	"nandrootfs=" \
-		"env set bootargs root=/dev/mtdblock0 rw " \
-		"rootfstype=jffs2 " \
-		"; run bootk \0" \
+		"env set bootargs $bootargs root=/dev/mtdblock0 rw rootfstype=jffs2;" \
+                "env set initrd_addr -;" \
+		"run jtagmemboot\0" \
 	PARTS_DEFAULT \
 	DFU_ALT_INFO
 #endif
