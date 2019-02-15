@@ -1,0 +1,368 @@
+/*
+ * dts file for Xilinx ZynqMP ZCU102 RevA
+ *
+ * (C) Copyright 2015, Xilinx, Inc.
+ *
+ * Michal Simek <michal.simek@xilinx.com>
+ *
+ * SPDX-License-Identifier:	GPL-2.0+
+ */
+
+/dts-v1/;
+
+#include <dt-bindings/phy/phy.h>
+
+/* Copies from Qemu Device Tree repo */
+#include "hpsc-irqs.dtsh"
+#include "hpsc-busids.dtsh"
+
+#define GIC_SPI 0
+#define GIC_PPI 1
+#define GIC_EDGE_RISE 1
+#define GIC_EDGE_FALL 2
+#define GIC_EDGE_BOTH 3
+#define GIC_LVL_HI 4
+#define GIC_LVL_LO 8
+
+/ {
+	model = "HPSC Chiplet";
+	compatible = "xlnx,zynqmp-zcu102-revA", "xlnx,zynqmp-zcu102", "xlnx,zynqmp";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	aliases {
+#if 0 /* TODO */
+		ethernet0 = &xgmac; 
+#endif
+		serial0 = &uart0;
+		serial1 = &dcc;
+	};
+
+	chosen {
+		bootargs = "earlycon";
+		stdout-path = "serial0:115200n8";
+	};
+
+	memory@0 {
+		device_type = "memory";
+		reg = 
+		        /* NOTE: when changing this, remember to also change in Qemu DT */
+			<0x00 0x40000000 0x00 0x40000000>; /* DDR Low 1G - minus space reserved by TRCH */
+		     /* <0x01 0x00000000 0x00 0x40000000>; */   /* TODO: DDR High 1G */
+		     /* <0x01 0x00000000 0x00 0x80000000>; */ /* TODO: DDR High 2G */
+	             /* <0x02 0x00000000 0x01 0x00000000>; */ /* TODO: DDR High 4G */
+	             /* <0x08 0x00000000 0x08 0x00000000>; */ /* TODO: DDR High 32G */
+	             /* <0x10 0x00000000 0x10 0x00000000>; */ /* TODO: DDR High 64G */
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpul0: cpu@0 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			device_type = "cpu";
+			enable-method = "psci";
+			operating-points-v2 = <&cpu_opp_table>;
+			reg = <0x0>;
+			cpu-idle-states = <&CPU_SLEEP_0>;
+		};
+
+		idle-states {
+			entry-method = "arm,psci";
+
+			CPU_SLEEP_0: cpu-sleep-0 {
+				compatible = "arm,idle-state";
+				arm,psci-suspend-param = <0x40000000>;
+				local-timer-stop;
+				entry-latency-us = <300>;
+				exit-latency-us = <600>;
+				min-residency-us = <10000>;
+			};
+		};
+	};
+
+	cpu_opp_table: cpu_opp_table {
+		compatible = "operating-points-v2";
+		opp-shared;
+		opp00 {
+			opp-hz = /bits/ 64 <1199999988>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+		opp01 {
+			opp-hz = /bits/ 64 <599999994>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+		opp02 {
+			opp-hz = /bits/ 64 <399999996>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+		opp03 {
+			opp-hz = /bits/ 64 <299999997>;
+			opp-microvolt = <1000000>;
+			clock-latency-ns = <500000>;
+		};
+	};
+
+	dcc: dcc {
+		compatible = "arm,dcc";
+	        status = "okay";
+		u-boot,dm-pre-reloc;
+	};
+
+	power-domains {
+		compatible = "xlnx,zynqmp-genpd";
+
+		pd_uart0: pd-uart0 {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x21>;
+		};
+
+		pd_eth0: pd-eth0 {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x1d>;
+		};
+
+		pd_nand: pd-nand {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x2c>;
+		};
+
+		pd_pcie: pd-pcie {
+			#power-domain-cells = <0x0>;
+			pd-id = <0x3b>;
+		};
+	};
+
+	pmu {
+		compatible = "arm,armv8-pmuv3";
+		interrupt-parent = <&gic>;
+		interrupts = <GIC_SPI HPPS_IRQ__PMU_0 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_1 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_2 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_3 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_4 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_5 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_6 GIC_LVL_HI>,
+			     <GIC_SPI HPPS_IRQ__PMU_7 GIC_LVL_HI>;
+		interrupt-affinity = <&cpul0>;
+	};
+
+	psci {
+		compatible = "arm,psci-0.2";
+		method = "smc";
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupt-parent = <&gic>;
+		interrupts = <GIC_PPI PPI_IRQ__TIMER_SEC  GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_PHYS GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_VIRT GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_HYP  GIC_LVL_LO>;
+	};
+
+	edac {
+		compatible = "arm,cortex-a53-edac";
+	};
+
+	amba_apu: amba_apu@0 {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <1>;
+		ranges = <0 0 0 0 0xffffffff>;
+		gic: interrupt-controller@30c00000{
+			compatible = "arm,gic-v3"; 
+			#interrupt-cells = <3>;
+			reg = <0x0 0x30c00000 0x10000>,
+			      <0x0 0x30c40000 0x40000>;
+			interrupt-controller;
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_PPI PPI_IRQ__GIC_MAINT GIC_LVL_HI>;
+		};
+	};
+
+	amba: amba {
+		compatible = "simple-bus";
+		u-boot,dm-pre-reloc;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+#if 0 /* TODO */
+		xgmac: ethernet@0xe5300000 {
+			compatible = "cdns,zynqmp-gem";
+	                status = "okay";
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI HPPS_IRQ__XGMAC      GIC_LVL_HI>,
+                                     <GIC_SPI HPPS_IRQ__XGMAC_WAKE GIC_LVL_HI>;
+			reg = <0x0 0xe5300000 0x0 0x1000>;
+			clocks = <&clk125>, <&clk125>, <&clk125>;
+                        clock-names = "pclk", "tx_clk", "hclk";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			iommus = <&smmu MASTER_ID_XGMAC>;
+			power-domains = <&pd_eth0>;
+                        phy-handle = <&phy0>;
+                        phy-mode = "rgmii-id";
+			phy0: phy@7 {
+				reg = <7>;
+				ti,rx-internal-delay = <0x8>;
+				ti,tx-internal-delay = <0xa>;
+				ti,fifo-depth = <0x1>;
+				ti,rxctrl-strap-worka;
+			};
+		};
+#endif
+#if 0 /* TODO */
+		pcie: pcie@0xe5330000 {
+			compatible = "xlnx,nwl-pcie-2.11";
+			status = "okay";
+			#address-cells = <3>;
+			#size-cells = <2>;
+			#interrupt-cells = <1>;
+			msi-controller;
+			device_type = "pci";
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI ? GIC_LVL_HI>,
+				     <GIC_SPI ? GIC_LVL_HI>,
+				     <GIC_SPI ? GIC_LVL_HI>,
+				     <GIC_SPI ? GIC_LVL_HI>,	/* MSI_1 [63...32] */
+				     <GIC_SPI ? GIC_LVL_HI>;	/* MSI_0 [31...0] */
+			interrupt-names = "misc","dummy","intx", "msi1", "msi0";
+			msi-parent = <&pcie>;
+			reg = <0x0 0xe5330000 0x0 0x1000>,
+			      <0x0 0xe56d0000 0x0 0x1000>,
+			      <0x80 0x00000000 0x0 0x1000000>;
+			reg-names = "breg", "pcireg", "cfg";
+			ranges = <0x02000000 0x00000000 0xe0000000 0x00000000 0xe0000000 0x00000000 0x10000000	/* non-prefetchable memory */
+				  0x43000000 0x00000006 0x00000000 0x00000006 0x00000000 0x00000002 0x00000000>;/* prefetchable memory */
+			bus-range = <0x00 0xff>;
+			interrupt-map-mask = <0x0 0x0 0x0 0x7>;
+			interrupt-map = <0x0 0x0 0x0 0x1 &pcie_intc 0x1>,
+					<0x0 0x0 0x0 0x2 &pcie_intc 0x2>,
+					<0x0 0x0 0x0 0x3 &pcie_intc 0x3>,
+					<0x0 0x0 0x0 0x4 &pcie_intc 0x4>;
+			power-domains = <&pd_pcie>;
+	                /* clocks = <&clkc 23>; */
+			pcie_intc: legacy-interrupt-controller {
+				interrupt-controller;
+				#address-cells = <0>;
+				#interrupt-cells = <1>;
+			};
+		};
+#endif
+#if 0	/* TODO */
+		smcc: smcc-memory-controller@f92d0000 {
+			#address-cells = <2>;
+			#size-cells = <2>; 
+			status = "okay";
+			clocks = <&clk100>, <&clk125>;
+			clock-names = "aclk", "memclk";
+			/* iommus = <&smmu MASTER_ID_SMC>; */ /* not connected to an MMU TBU */
+			compatible = "arm,pl353-smc-r2p1";
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC GIC_LVL_HI>;
+
+			ranges ;
+			reg = <0x0 0xf92d0000 0x0 0x1000>;
+			nand0: nand0@600000000 {
+				status = "okay";
+				compatible = "arm,pl353-nand-r2p1";
+				reg = <0x6 0x0 0x0 0x20000000>;
+				#address-cells = <0x2>;
+				#size-cells = <0x1>;
+				power-domains = <&pd_nand>;
+			};
+			sram0: sram0@680000000 {
+				status = "disabled";
+				compatible = "offchip-sram";
+				reg = <0x6 0x80000000 0x0 0x400000>;
+				#address-cells = <0x2>;
+				#size-cells = <0x2>;
+			};
+		};
+#endif
+
+        rtps_smmu: r_smmu@31000000 {
+            compatible = "arm,mmu-500";
+            reg = <0x0 0x31000000 0x0 0x20000>;
+	    #iommu-cells = <1>;
+	    #global-interrupts = <1>;
+	    interrupt-parent = <&gic>;
+            interrupts =    <GIC_SPI RTPS_IRQ__RTPS_SMMU_GLOB  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_0  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_1  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_2  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_3  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_4  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_5  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_6  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_7  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_8  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_9  GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_10 GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_11 GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_12 GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_13 GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_14 GIC_LVL_HI>,
+                            <GIC_SPI RTPS_IRQ__RTPS_SMMU_CB_15 GIC_LVL_HI>;
+                };
+
+#if 0
+		smmu: smmu@f9300000 {
+			compatible = "arm,mmu-500";
+			reg = <0x0 0xf9300000 0x0 0x20000>;
+			#iommu-cells = <1>;
+			#global-interrupts = <1>;
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMMU_GLOB GIC_LVL_HI>, /* global irq */
+                                /* context IRQs */
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_0 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_1 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_2 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_3 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_4 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_5 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_6 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_7 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_8 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_9 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_10 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_11 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_12 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_13 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_14 GIC_LVL_HI>,
+                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_15 GIC_LVL_HI>;
+		};
+#endif
+		uart0: serial@30001000 {
+			compatible = "snps,dw-apb-uart";
+			status = "okay";
+			/* the driver polls; this interrupt is unused. */
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_UART0_0 GIC_LVL_HI>;
+			reg = <0x0 0x30001000 0x0 0x1000>;
+			current-speed = <115200>;
+			reg-offset = <0>;
+			reg-shift = <2>; /* register width: 4-byte = 32-bit */
+			clocks = <&clk100 &clk100>;
+			clock-names = "uart_clk", "pclk";
+			power-domains = <&pd_uart0>;
+		};
+	};
+
+	clk100: clk100 {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <100000000>;
+		u-boot,dm-pre-reloc;
+	};
+	clk125: clk125 {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <125000000>;
+	};
+};
