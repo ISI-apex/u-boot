@@ -1,0 +1,95 @@
+/*
+ * Device tree for HPSC Chiplet (RTPS A53 subsystem)
+ */
+
+/dts-v1/;
+
+// See Table 2-2 in ARM GIC Spec for recommended assignment,
+// and note that PPI ID = INTID - GIC_NR_SGIS = INTID-16
+#define PPI_IRQ__TIMER_HYP                      10
+#define PPI_IRQ__TIMER_VIRT                     11
+#define PPI_IRQ__TIMER_SEC                      13
+#define PPI_IRQ__TIMER_PHYS                     14
+
+#define GIC_SPI 0
+#define GIC_PPI 1
+#define GIC_EDGE_RISE 1
+#define GIC_EDGE_FALL 2
+#define GIC_EDGE_BOTH 3
+#define GIC_LVL_HI 4
+#define GIC_LVL_LO 8
+
+/ {
+	model = "HPSC Chiplet (RTPS A53)";
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		bootargs = "earlycon";
+		stdout-path = "serial0:500000n8";
+	};
+
+	memory {
+		device_type = "memory";
+		/* RTPS DRAM (1GB total) partitioned among R52 and A53 */
+		reg = <0x00 0x60000000 0x00 0x20000000>;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpul0: cpu@0 {
+			compatible = "arm,cortex-a53", "arm,armv8";
+			device_type = "cpu";
+			reg = <0x0>;
+		};
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupt-parent = <&gic>;
+		interrupts = <GIC_PPI PPI_IRQ__TIMER_SEC  GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_PHYS GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_VIRT GIC_LVL_LO>,
+			     <GIC_PPI PPI_IRQ__TIMER_HYP  GIC_LVL_LO>;
+	};
+
+	amba: amba {
+		compatible = "simple-bus";
+		u-boot,dm-pre-reloc;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		gic: interrupt-controller@30c00000{
+			compatible = "arm,gic-v3"; 
+			#interrupt-cells = <3>;
+			reg = <0x0 0x30c00000 0x0 0x10000>,
+			      <0x0 0x30c40000 0x0 0x40000>;
+			interrupt-controller;
+		};
+
+		uart0: serial@30001000 {
+			compatible = "snps,dw-apb-uart";
+			status = "okay";
+			reg = <0x0 0x30001000 0x0 0x1000>;
+			current-speed = <500000>;
+			reg-offset = <0>;
+			reg-shift = <2>; /* register width: 4-byte = 32-bit */
+			clocks = <&clk100 &clk100>;
+			clock-names = "uart_clk", "pclk";
+		};
+	};
+
+	clk100: clk100 {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <100000000>;
+		u-boot,dm-pre-reloc;
+	};
+};

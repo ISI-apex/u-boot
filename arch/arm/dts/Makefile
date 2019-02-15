@@ -299,6 +299,8 @@ dtb-$(CONFIG_ARCH_HPSC_HPPS) += \
 	hpsc-hpps.dtb
 dtb-$(CONFIG_ARCH_HPSC_RTPS_R52) += \
         hpsc-rtps-r52.dtb
+dtb-$(CONFIG_ARCH_HPSC_RTPS_A53) += \
+        hpsc-rtps-a53.dtb
 dtb-$(CONFIG_AM33XX) += \
 	am335x-baltos.dtb \
 	am335x-bone.dtb \
