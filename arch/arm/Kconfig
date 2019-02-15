@@ -931,6 +931,21 @@ config ARCH_HPSC_HPPS
 	imply CMD_DM
 	imply FAT_WRITE
 
+config ARCH_HPSC_RTPS_A53
+	bool "HPSC RTPS A53 based platform"
+	select ARM64
+	select CLK
+	select DM
+	select DM_SERIAL
+	select DM_USB if USB
+	select OF_CONTROL
+	select SPL_BOARD_INIT if SPL
+	select SPL_CLK if SPL
+	select SUPPORT_SPL
+	imply BOARD_LATE_INIT
+	imply CMD_DM
+	imply FAT_WRITE
+
 config ARCH_ZYNQMP
 	bool "Xilinx ZynqMP based platform"
 	select ARM64
@@ -1491,6 +1506,7 @@ source "arch/arm/cpu/armv7/Kconfig"
 
 source "arch/arm/cpu/armv8/zynqmp/Kconfig"
 source "arch/arm/cpu/armv8/hpps/Kconfig"
+source "arch/arm/cpu/armv8/rtps_a53/Kconfig"
 
 source "arch/arm/cpu/armv8/Kconfig"
 

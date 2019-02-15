@@ -108,7 +108,7 @@ ENTRY(gic_init_secure_percpu)
 	str	w11, [x10, GICR_ISENABLERn]
 
 	/* Initialize Cpu Interface */
-#ifndef CONFIG_ARCH_HPSC_HPPS /* comment out by DK: because u-boot is now at EL2 */
+#if ! defined(CONFIG_ARCH_HPSC_HPPS) && ! defined(CONFIG_ARCH_HPSC_RTPS_A53)  /* comment out by DK: because u-boot is now at EL2 */
 	mrs	x10, ICC_SRE_EL3
 	orr	x10, x10, #0xf		/* SRE & Disable IRQ/FIQ Bypass & */
 					/* Allow EL2 access to ICC_SRE_EL2 */
@@ -121,7 +121,7 @@ ENTRY(gic_init_secure_percpu)
 	msr	ICC_SRE_EL2, x10
 	isb
 
-#ifndef CONFIG_ARCH_HPSC_HPPS /* comment out by DK: because u-boot is now at EL2 */
+#if ! defined(CONFIG_ARCH_HPSC_HPPS) && ! defined(CONFIG_ARCH_HPSC_RTPS_A53)  /* comment out by DK: because u-boot is now at EL2 */
 	mov	x10, #0x3		/* EnableGrp1NS | EnableGrp1S */
 	msr	ICC_IGRPEN1_EL3, x10
 	isb
