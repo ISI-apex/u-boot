@@ -1,20 +1,20 @@
 # SPDX-License-Identifier: GPL-2.0
 
-if ARCH_HPSC_HPPS
+if ARCH_HPSC_RTPS_A53
 
 config SYS_BOARD
-	default "hpps"
+	default "rtps_a53"
 
 config SYS_VENDOR
 	string "Vendor name"
 	default "hpsc"
 
 config SYS_SOC
-	default "hpps"
+	default "rtps-a53"
 
 config SYS_CONFIG_NAME
 	string "Board configuration name"
-	default "hpsc_hpps"
+	default "hpsc_rtps_a53"
 	help
 	  This option contains information about board configuration name.
 	  Based on this option include/configs/<CONFIG_SYS_CONFIG_NAME>.h header
@@ -24,4 +24,3 @@ config SYS_MALLOC_F_LEN
 	default 0x600
 
 endif
-

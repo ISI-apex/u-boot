@@ -1073,6 +1073,21 @@ config ARCH_ZYNQMP_R5
 	imply CMD_DM
 	imply DM_USB_GADGET
 
+config ARCH_HPSC_RTPS_A53
+	bool "HPSC RTPS A53 based platform"
+	select ARM64
+	select CLK
+	select DM
+	select DM_SERIAL
+	select DM_USB if USB
+	select OF_CONTROL
+	select SPL_BOARD_INIT if SPL
+	select SPL_CLK if SPL
+	select SUPPORT_SPL
+	imply BOARD_LATE_INIT
+	imply CMD_DM
+	imply FAT_WRITE
+
 config ARCH_ZYNQMP
 	bool "Xilinx ZynqMP based platform"
 	select ARM64
@@ -1719,6 +1734,7 @@ source "arch/arm/mach-exynos/Kconfig"
 source "arch/arm/mach-highbank/Kconfig"
 
 source "arch/arm/mach-hpsc-hpps/Kconfig"
+source "arch/arm/mach-hpsc-rtps-a53/Kconfig"
 
 source "arch/arm/mach-integrator/Kconfig"
 
@@ -1872,6 +1888,7 @@ source "board/xilinx/zynqmp/Kconfig"
 source "board/phytium/durian/Kconfig"
 
 source "board/hpsc/hpps/Kconfig"
+source "board/hpsc/rtps_a53/Kconfig"
 
 source "arch/arm/Kconfig.debug"
 
