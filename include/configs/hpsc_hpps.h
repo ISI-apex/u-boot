@@ -185,13 +185,12 @@
 
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"compressed_kernel_addr=0x81080000\0" \
-	"kernel_addr=0x80080000\0" \
+	"kernel_addr=0x80064000\0" \
 	"initrd_addr=0x90000000\0" \
-	"fdt_addr=0x84000000\0" \
+	"fdt_addr=0x80060000\0" \
         "bootargs=earlycon=uart8250,mmio32,0xF92C0000,115200n8 console=ttyS0,115200n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
-        "jtagmemboot= bootm $compressed_kernel_addr $initrd_addr $fdt_addr\0" \
+        "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0" \
 	"nandrootfs=" \
 		"env set bootargs $bootargs root=/dev/mtdblock0 rw rootfstype=jffs2;" \
                 "env set initrd_addr -;" \
