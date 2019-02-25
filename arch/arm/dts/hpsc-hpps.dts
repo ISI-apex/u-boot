@@ -383,12 +383,18 @@
 			current-speed = <115200>;
 			reg-offset = <0>;
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */
-			clocks = <&clk100 &clk100>;
+			clocks = <&uart_clk &uart_clk>;
 			clock-names = "uart_clk", "pclk";
 			power-domains = <&pd_uart0>;
 		};
 	};
 
+	uart_clk: uart_clk {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <16000000>;
+		u-boot,dm-pre-reloc;
+	};
 	clk100: clk100 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
