@@ -49,7 +49,7 @@
 
 	chosen {
 		bootargs = "";
-		stdout-path = "serial0:115200n8";
+		stdout-path = "serial0:500000n8";
 	};
 
 	clk100: clk100 {
@@ -95,6 +95,7 @@
 			compatible = "snps,dw-apb-uart";
 			status = "okay";
 			reg = <0x30001000 0x1000>;
+			current-speed = <500000>;
 			reg-offset = <0>;
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */
 			clocks = <&clk100 &clk100>;
