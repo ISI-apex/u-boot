@@ -142,7 +142,8 @@ static u32 ns16550_getfcr(NS16550_t port)
 int ns16550_calc_divisor(NS16550_t port, int clock, int baudrate)
 {
 	const unsigned int mode_x_div = 16;
-	return clock / (mode_x_div * baudrate);
+
+	return DIV_ROUND_CLOSEST(clock, mode_x_div * baudrate);
 }
 
 static void NS16550_setbrg(NS16550_t com_port, int baud_divisor)
