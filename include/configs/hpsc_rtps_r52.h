@@ -18,8 +18,7 @@
 
 /* Serial drivers */
 /* The following table includes the supported baudrates */
-#define CONFIG_SYS_BAUDRATE_TABLE  \
-	{300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400}
+#define CONFIG_SYS_BAUDRATE_TABLE  {500000}
 
 # define CONFIG_ENV_SIZE	(128 << 10)
 

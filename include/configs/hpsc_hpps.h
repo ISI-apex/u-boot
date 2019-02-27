@@ -45,8 +45,7 @@
 #define CONFIG_ARM_DCC
 #define CONFIG_CPU_ARMV8
 
-#define CONFIG_SYS_BAUDRATE_TABLE \
-	{ 4800, 9600, 19200, 38400, 57600, 115200 }
+#define CONFIG_SYS_BAUDRATE_TABLE { 500000 }
 
 /* BOOTP options */
 #define CONFIG_BOOTP_BOOTFILESIZE
@@ -188,7 +187,7 @@
 	"kernel_addr=0x80064000\0" \
 	"initrd_addr=-\0" \
 	"fdt_addr=0x80060000\0" \
-        "bootargs=earlycon=uart8250,mmio32,0xF92C0000,115200n8 console=ttyS0,115200n8 loglevel=8\0" \
+        "bootargs=earlycon=uart8250,mmio32,0xF92C0000,500000n8 console=ttyS0,500000n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
         "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0" \
 	"nandrootfs=" \
