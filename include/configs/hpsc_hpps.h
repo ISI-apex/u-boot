@@ -69,7 +69,7 @@
 #define CONFIG_SYS_LOAD_ADDR		0x8000000
 
 #if defined(CONFIG_BOOT_MODE_IN_RAM)
-#define BOOT_MODE_ADDRESS 0x9f000000
+#define BOOT_MODE_ADDRESS 0x8001fffc
 #endif
 
 #if defined(CONFIG_ZYNQMP_USB)
