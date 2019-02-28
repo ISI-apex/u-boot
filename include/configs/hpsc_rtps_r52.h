@@ -18,7 +18,7 @@
 
 /* Serial drivers */
 /* The following table includes the supported baudrates */
-#define CONFIG_SYS_BAUDRATE_TABLE  {500000}
+#define CONFIG_SYS_BAUDRATE_TABLE  { 125000 }
 
 # define CONFIG_ENV_SIZE	(128 << 10)
 
