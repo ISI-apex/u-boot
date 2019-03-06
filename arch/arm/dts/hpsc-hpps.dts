@@ -31,9 +31,13 @@
 	#size-cells = <2>;
 
 	aliases {
+#if 0
 		ethernet0 = &xgmac;
+#endif
 		serial0 = &uart0;
+#if 0
 		serial1 = &dcc;
+#endif
 	};
 
 	chosen {
@@ -60,11 +64,14 @@
 			compatible = "arm,cortex-a53", "arm,armv8";
 			device_type = "cpu";
 			enable-method = "psci";
-			operating-points-v2 = <&cpu_opp_table>;
 			reg = <0x0>;
+#if 0
+			operating-points-v2 = <&cpu_opp_table>;
 			cpu-idle-states = <&CPU_SLEEP_0>;
+#endif
 		};
 
+#if 0
 		cpul1: cpu@1 {
 			compatible = "arm,cortex-a53", "arm,armv8";
 			device_type = "cpu";
@@ -127,8 +134,9 @@
 			operating-points-v2 = <&cpu_opp_table>;
 			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
+#endif
 
-
+#if 0
 		idle-states {
 			entry-method = "arm,psci";
 
@@ -141,8 +149,10 @@
 				min-residency-us = <10000>;
 			};
 		};
+#endif
 	};
 
+#if 0
 	cpu_opp_table: cpu_opp_table {
 		compatible = "operating-points-v2";
 		opp-shared;
@@ -217,6 +227,7 @@
 		compatible = "arm,psci-0.2";
 		method = "smc";
 	};
+#endif
 
 	timer {
 		compatible = "arm,armv8-timer";
@@ -227,9 +238,11 @@
 			     <GIC_PPI PPI_IRQ__TIMER_HYP  GIC_LVL_LO>;
 	};
 
+#if 0
 	edac {
 		compatible = "arm,cortex-a53-edac";
 	};
+#endif
 
 	amba_apu: amba_apu@0 {
 		compatible = "simple-bus";
@@ -254,6 +267,7 @@
 		#size-cells = <2>;
 		ranges;
 
+#if 0
 		xgmac: ethernet@0xe5300000 {
 			compatible = "cdns,zynqmp-gem";
 	                status = "okay";
@@ -277,6 +291,7 @@
 				ti,rxctrl-strap-worka;
 			};
 		};
+#endif
 
 #if 0 /* TODO */
 		pcie: pcie@0xe5330000 {
@@ -317,6 +332,7 @@
 		};
 #endif
 
+#if 0
 		smcc: smcc-memory-controller@f92d0000 {
 			#address-cells = <2>;
 			#size-cells = <2>; 
@@ -372,6 +388,7 @@
                                 <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_14 GIC_LVL_HI>,
                                 <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_15 GIC_LVL_HI>;
 		};
+#endif
 
 		uart0: serial@f92c0000 {
 			compatible = "snps,dw-apb-uart";
@@ -385,7 +402,9 @@
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */
 			clocks = <&uart_clk &uart_clk>;
 			clock-names = "uart_clk", "pclk";
+#if 0
 			power-domains = <&pd_uart0>;
+#endif
 		};
 	};
 
@@ -395,6 +414,7 @@
 		clock-frequency = <16000000>;
 		u-boot,dm-pre-reloc;
 	};
+#if 0
 	clk100: clk100 {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -406,4 +426,5 @@
 		#clock-cells = <0>;
 		clock-frequency = <125000000>;
 	};
+#endif
 };
