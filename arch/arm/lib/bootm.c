@@ -217,7 +217,9 @@ __weak void setup_board_tags(struct tag **in_params) {}
 static void do_nonsec_virt_switch(void)
 {
 	smp_kick_all_cpus();
+#if 0
 	dcache_disable();	/* flush cache before swtiching to EL2 */
+#endif
 }
 #endif
 
