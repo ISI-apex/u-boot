@@ -185,7 +185,7 @@
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"kernel_addr=0x80064000\0" \
-	"initrd_addr=0x90000000\0" \
+	"initrd_addr=0x803c2000\0" \
 	"fdt_addr=0x80060000\0" \
         "bootargs=earlycon=uart8250,mmio32,0xF92C0000,125000n8 console=ttyS0,125000n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
