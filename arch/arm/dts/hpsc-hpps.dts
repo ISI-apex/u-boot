@@ -45,9 +45,9 @@
 		reg = 
 		        /* NOTE: when changing this, remember to also change in Qemu DT */
                 /* DDR Low: 1 Gb (split into regions to prevent u-boot zero-ing any but the first */
-		        <0x00 0x80020000 0x00 0x037e0000>, /* 64Mb - (ATF + TRCH's reservations + ramoops) */
+		        <0x00 0x80020000 0x00 0x03be0000>, /* 64Mb - ATF - ramoops */
 		        <0x00 0x84000000 0x00 0x04000000>, /* 64Mb reserved by Linux as general-purpose buf */
-		        <0x00 0x88000000 0x00 0x38000000>, /* remaining DDR low for Linux to use */
+		        <0x00 0x88000000 0x00 0x37800000>, /* remaining DDR low for Linux to use (excl. TRCH's reservations) */
 		        <0x01 0x00000000 0x00 0x40000000>;    /* TODO: DDR High 1G */
 		     /* <0x01 0x00000000 0x00 0x80000000>; */ /* TODO: DDR High 2G */
 	             /* <0x02 0x00000000 0x01 0x00000000>; */ /* TODO: DDR High 4G */
