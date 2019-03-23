@@ -46,7 +46,7 @@
               /* DDR Low: 1 Gb */
               /* Segments base:size (commented regions are not exposed to U-boot/Linux by U-boot DT): */
               /* <0x00 0x80000000 0x00 0x00200000> ATF */
-		         <0x00 0x80020000 0x00 0x03200000>, /* mem available to U-boot/Linux */
+		         <0x00 0x80020000 0x00 0x031e0000>, /* mem available to U-boot/Linux */
               /* <0x00 0x83200000 0x00 0x00400000> ramoops */
               /* <0x00 0x83600000 0x00 0x00800000> inter-subsystem shared memory regions */
               /* <0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
