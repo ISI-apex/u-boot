@@ -50,7 +50,7 @@
 			/* ,<0x00 0x83200000 0x00 0x00400000> ramoops */
 			/* ,<0x00 0x83600000 0x00 0x00800000> inter-subsystem shared memory regions */
 			/* ,<0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
-			   ,<0x00 0x84000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
+			   ,<0x00 0x84000000 0x00 0x3c000000> /* remaining DDR low for Linux to use */
 			/* ,DDR High: one of the following possible sizes */
 			   ,<0x01 0x00000000 0x00 0x40000000>    /* 1G */
 			/*  |0x01 0x00000000 0x00 0x00010000     /* RT MMU test */
