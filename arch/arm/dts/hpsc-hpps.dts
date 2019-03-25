@@ -56,7 +56,7 @@
 			/* ,<0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
 			   ,<0x00 0x84000000 0x00 0x3c000000> /* remaining DDR low for Linux to use */
 			/* ,DDR High: one of the following possible sizes */
-			   ,<0x01 0x00000000 0x00 0x40000000>    /* 1G */
+			/* ,<0x01 0x00000000 0x00 0x40000000> */ /* 1G */
 			/*  |0x01 0x00000000 0x00 0x00010000     /* RT MMU test */
 			/*  |0x01 0x00010000 0x00 0x3fff0000     /* general-purpose buf (marked reserved in Linux) */
 			/* ,<0x01 0x00000000 0x00 0x80000000> */ /* 2G */
