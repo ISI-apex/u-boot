@@ -45,9 +45,9 @@
 		reg = 
 		        /* NOTE: when changing this, remember to also change in Qemu DT */
 		        <0x00 0x80020000 0x00 0x3f7e0000>, /* DDR Low 1G, excluding ATF and TRCH's reservations */
-		        <0x01 0x00000000 0x00 0x40000000>;    /* TODO: DDR High 1G */
-		     /* <0x01 0x00000000 0x00 0x80000000>; */ /* TODO: DDR High 2G */
-	             /* <0x02 0x00000000 0x01 0x00000000>; */ /* TODO: DDR High 4G */
+		        <0x01 0x00000000 0x00 0xC0000000>; /* DDR High 3G */
+		     /* <0x01 0x00000000 0x00 0x80000000>; */  /* TODO: DDR High 2G */
+	             /* <0x02 0x00000000 0x01 0x00000000>; */  /* TODO: DDR High 4G */
 	             /* <0x08 0x00000000 0x08 0x00000000>; */ /* TODO: DDR High 32G */
 	             /* <0x10 0x00000000 0x10 0x00000000>; */ /* TODO: DDR High 64G */
 	};
