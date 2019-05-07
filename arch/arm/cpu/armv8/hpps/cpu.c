@@ -59,6 +59,13 @@ static struct mm_region zynqmp_mem_map[ZYNQMP_MEM_MAP_MAX] = {
 			 PTE_BLOCK_INNER_SHARE
 	}, 
 	{
+		.virt = 0x200000000UL,
+		.phys = 0x200000000UL,
+		.size = 0x200000000UL,
+		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
+			 PTE_BLOCK_INNER_SHARE
+	},
+	{
 		.virt = 0xC0000000UL,
 		.phys = 0xC0000000UL,
 		.size = 0x30000000UL,
