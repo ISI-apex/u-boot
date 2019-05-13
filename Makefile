@@ -263,7 +263,9 @@ HOSTCXXFLAGS = -O2
 # Some Linux distributions (including RHEL7, SLES13, Debian 8) still
 # have older compilers as their default, so we make it explicit for
 # these that our host tools are GNU11 (i.e. C11 w/ GNU extensions).
-CSTD_FLAG := -std=gnu11
+#
+# PATCHED: revert to gnu99 to support GCC <= 4.4
+CSTD_FLAG := -std=gnu99
 ifeq ($(HOSTOS),linux)
 HOSTCFLAGS += $(CSTD_FLAG)
 endif
