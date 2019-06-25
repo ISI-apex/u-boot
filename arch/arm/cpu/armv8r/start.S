@@ -128,7 +128,14 @@ ENTRY(armv8r_switch_to_el1)
 	MRS	r0, cpsr
 	MOV	r1, #0x13
 	BFI	r0, r1, #0, #5
-	MSR	spsr_hyp, r0
+	MSR	spsr, r0 /* write to SPSR for current mode (i.e. SPSR_hyp) */
+                 /* note: in Qemu, there are two separate locations for
+                    current SPSR and banked SPSR; and they are synchronized
+                    upon switching modes (i.e. exception return), but
+                    exception return itself ERET restores SPSR from
+                    the current SPSR location, which won't be set with
+                    'MSR spsr_hyp, r0'. Not sure if this is Qemu issue
+                     or real hardware. */
 	LDR	r0, =NEXT
 	MSR 	elr_hyp, r0
 	DSB
