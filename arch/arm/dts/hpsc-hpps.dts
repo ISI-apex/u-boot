@@ -45,14 +45,75 @@
 		reg = 
 			/* DDR Low: 1 Gb */
 			/* Segments base:size (commented regions are not exposed to U-boot/Linux by U-boot DT): */
+#if 0 /* 64 */
 			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
 			    <0x00 0x80020000 0x00 0x031e0000> /* mem available to U-boot/Linux */
 			/* ,<0x00 0x83200000 0x00 0x00400000> ramoops */
 			/* ,<0x00 0x83600000 0x00 0x00800000> inter-subsystem shared memory regions */
 			/* ,<0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
 			   ,<0x00 0x84000000 0x00 0x3c000000> /* remaining DDR low for Linux to use */
+#else
+#if 0 /* 128 */
+			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
+			    <0x00 0x80020000 0x00 0x071e0000> /* mem available to U-boot/Linux */
+			/* ,<0x00 0x87200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x87600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0x88000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
+#else /* 256 */
+#if 0
+			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
+			    <0x00 0x80020000 0x00 0x0f1e0000> /* mem available to U-boot/Linux */
+			/* ,<0x00 0x8f200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x8f600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x8fe00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0x90000000 0x00 0x30000000> /* remaining DDR low for Linux to use */
+#else /* 512 */
+#if 0
+			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
+			    <0x00 0x80020000 0x00 0x1fe00000> /* mem available to U-boot/Linux */
+			/* ,<0x00 0x9f200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x9f600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x9fe00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0xa0000000 0x00 0x20000000> /* remaining DDR low for Linux to use */
+#else
+#if 0
+			    <0x00 0x90000000 0x00 0x30000000> /* mem available to U-boot/Linux */
+#else
+#if 0
+			    <0x00 0x80000000 0x00 0x07200000> /* mem available to U-boot/Linux */
+			/* ,<0x00 0x87200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x87600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0x88000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
+#else
+#if 1 /* 128 MB working */
+			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
+			/*  <0x00 0x80020000 0x00 0x001e0000> padding to align for Linux; boot images */
+			    <0x00 0x80200000 0x00 0x07000000> /* mem available to U-boot/Linux; boot images */
+			/* ,<0x00 0x87200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x87600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0x88000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
+#else /* 64 MB  */
+			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
+			/*  <0x00 0x80020000 0x00 0x001e0000> padding to align for Linux; boot images */
+			    <0x00 0x80200000 0x00 0x03000000> /* mem available to U-boot/Linux; boot images */
+			/* ,<0x00 0x83200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x83600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0x84000000 0x00 0x3c000000> /* remaining DDR low for Linux to use */
+#endif
+#endif
+#endif
+#endif
+#endif
+#endif
+#endif
 			/* ,DDR High: one of the following possible sizes */
+#if 0
 			   ,<0x01 0x00000000 0x00 0xc0000000>    /* DDR HIGH 1:  3G (max 4G) */
+#endif
 			/*  |0x01 0x00000000 0x00 0x00010000     /* RT MMU test */
 			/*  |0x01 0x00010000 0x00 0x3fff0000     /* general-purpose buf (marked reserved in Linux) */
 			/* ,<0x02 0x00000000 0x01 0x00000000> */ /* DDR HIGH 1:  4G */
