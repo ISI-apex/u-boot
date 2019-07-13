@@ -46,11 +46,12 @@
 			/* DDR Low: 1 Gb */
 			/* Segments base:size (commented regions are not exposed to U-boot/Linux by U-boot DT): */
 			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
-			    <0x00 0x80020000 0x00 0x031e0000> /* mem available to U-boot/Linux */
-			/* ,<0x00 0x83200000 0x00 0x00400000> ramoops */
-			/* ,<0x00 0x83600000 0x00 0x00800000> inter-subsystem shared memory regions */
-			/* ,<0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
-			   ,<0x00 0x84000000 0x00 0x3c000000> /* remaining DDR low for Linux to use */
+			/*  <0x00 0x80020000 0x00 0x001e0000> padding to align for Linux; boot images */
+			    <0x00 0x80200000 0x00 0x07000000> /* mem available to U-boot/Linux; boot images */
+			/* ,<0x00 0x87200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0x87600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0x88000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
 			/* ,DDR High: one of the following possible sizes */
 			   ,<0x01 0x00000000 0x00 0xc0000000>    /* DDR HIGH 1:  3G (max 4G) */
 			/*  |0x01 0x00000000 0x00 0x00010000     /* RT MMU test */
