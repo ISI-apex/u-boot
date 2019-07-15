@@ -62,9 +62,7 @@
 			compatible = "arm,cortex-a53", "arm,armv8";
 			device_type = "cpu";
 			enable-method = "psci";
-			operating-points-v2 = <&cpu_opp_table>;
 			reg = <0x0>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpul1: cpu@1 {
@@ -72,8 +70,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x1>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpul2: cpu@2 {
@@ -81,8 +77,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x2>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpul3: cpu@3 {
@@ -90,8 +84,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x3>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpub0: cpu@100 {
@@ -99,8 +91,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x100>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpub1: cpu@101 {
@@ -108,8 +98,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x101>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpub2: cpu@102 {
@@ -117,8 +105,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x102>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
 		};
 
 		cpub3: cpu@103 {
@@ -126,71 +112,6 @@
 			device_type = "cpu";
 			enable-method = "psci";
 			reg = <0x103>;
-			operating-points-v2 = <&cpu_opp_table>;
-			cpu-idle-states = <&CPU_SLEEP_0>;
-		};
-
-
-		idle-states {
-			entry-method = "arm,psci";
-
-			CPU_SLEEP_0: cpu-sleep-0 {
-				compatible = "arm,idle-state";
-				arm,psci-suspend-param = <0x40000000>;
-				local-timer-stop;
-				entry-latency-us = <300>;
-				exit-latency-us = <600>;
-				min-residency-us = <10000>;
-			};
-		};
-	};
-
-	cpu_opp_table: cpu_opp_table {
-		compatible = "operating-points-v2";
-		opp-shared;
-		opp00 {
-			opp-hz = /bits/ 64 <1199999988>;
-			opp-microvolt = <1000000>;
-			clock-latency-ns = <500000>;
-		};
-		opp01 {
-			opp-hz = /bits/ 64 <599999994>;
-			opp-microvolt = <1000000>;
-			clock-latency-ns = <500000>;
-		};
-		opp02 {
-			opp-hz = /bits/ 64 <399999996>;
-			opp-microvolt = <1000000>;
-			clock-latency-ns = <500000>;
-		};
-		opp03 {
-			opp-hz = /bits/ 64 <299999997>;
-			opp-microvolt = <1000000>;
-			clock-latency-ns = <500000>;
-		};
-	};
-
-	power-domains {
-		compatible = "xlnx,zynqmp-genpd";
-
-		pd_uart0: pd-uart0 {
-			#power-domain-cells = <0x0>;
-			pd-id = <0x21>;
-		};
-
-		pd_eth0: pd-eth0 {
-			#power-domain-cells = <0x0>;
-			pd-id = <0x1d>;
-		};
-
-		pd_nand: pd-nand {
-			#power-domain-cells = <0x0>;
-			pd-id = <0x2c>;
-		};
-
-		pd_pcie: pd-pcie {
-			#power-domain-cells = <0x0>;
-			pd-id = <0x3b>;
 		};
 	};
 
@@ -262,7 +183,6 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			iommus = <&smmu MASTER_ID_XGMAC>;
-			power-domains = <&pd_eth0>;
                         phy-handle = <&phy0>;
                         phy-mode = "rgmii-id";
 			phy0: phy@7 {
@@ -303,7 +223,6 @@
 					<0x0 0x0 0x0 0x2 &pcie_intc 0x2>,
 					<0x0 0x0 0x0 0x3 &pcie_intc 0x3>,
 					<0x0 0x0 0x0 0x4 &pcie_intc 0x4>;
-			power-domains = <&pd_pcie>;
 	                /* clocks = <&clkc 23>; */
 			pcie_intc: legacy-interrupt-controller {
 				interrupt-controller;
@@ -332,7 +251,6 @@
 				reg = <0x6 0x0 0x0 0x20000000>;
 				#address-cells = <0x2>;
 				#size-cells = <0x1>;
-				power-domains = <&pd_nand>;
 			};
 			sram0: sram0@680000000 {
 				status = "disabled";
@@ -381,7 +299,6 @@
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */
 			clocks = <&uart_clk &uart_clk>;
 			clock-names = "uart_clk", "pclk";
-			power-domains = <&pd_uart0>;
 		};
 	};
 
