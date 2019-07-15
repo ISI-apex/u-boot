@@ -1,11 +1,5 @@
 /*
- * dts file for Xilinx ZynqMP ZCU102 RevA
- *
- * (C) Copyright 2015, Xilinx, Inc.
- *
- * Michal Simek <michal.simek@xilinx.com>
- *
- * SPDX-License-Identifier:	GPL-2.0+
+ * Device tree for HPSC Chiplet
  */
 
 /dts-v1/;
@@ -26,7 +20,6 @@
 
 / {
 	model = "HPSC Chiplet";
-	compatible = "xlnx,zynqmp-zcu102-revA", "xlnx,zynqmp-zcu102", "xlnx,zynqmp";
 	#address-cells = <2>;
 	#size-cells = <2>;
 
