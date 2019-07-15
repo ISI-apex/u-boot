@@ -115,21 +115,6 @@
 		};
 	};
 
-	pmu {
-		compatible = "arm,armv8-pmuv3";
-		interrupt-parent = <&gic>;
-		interrupts = <GIC_SPI HPPS_IRQ__PMU_0 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_1 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_2 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_3 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_4 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_5 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_6 GIC_LVL_HI>,
-			     <GIC_SPI HPPS_IRQ__PMU_7 GIC_LVL_HI>;
-		interrupt-affinity = <&cpul0>, <&cpul1>, <&cpul2>, <&cpul3>,
-                                     <&cpub0>, <&cpub1>, <&cpub2>, <&cpub3>;
-	};
-
 	psci {
 		compatible = "arm,psci-0.2";
 		method = "smc";
