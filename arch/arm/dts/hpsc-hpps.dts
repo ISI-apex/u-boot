@@ -45,14 +45,14 @@
 		reg = 
 			/* DDR Low: 1 Gb */
 			/* Segments base:size (commented regions are not exposed to U-boot/Linux by U-boot DT): */
-			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
-			    <0x00 0x80020000 0x00 0x031e0000> /* mem available to U-boot/Linux */
-			/* ,<0x00 0x83200000 0x00 0x00400000> ramoops */
-			/* ,<0x00 0x83600000 0x00 0x00800000> inter-subsystem shared memory regions */
-			/* ,<0x00 0x83e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
-			   ,<0x00 0x84000000 0x00 0x3c000000> /* remaining DDR low for Linux to use */
+			/*  <0x00 0xC0000000 0x00 0x00200000> ATF */
+			    <0x00 0xC0020000 0x00 0x031e0000> /* mem available to U-boot/Linux (memory map v16) */
+			/* ,<0x00 0xC3200000 0x00 0x00400000> ramoops */
+			/* ,<0x00 0xC3600000 0x00 0x00800000> inter-subsystem shared memory regions */
+			/* ,<0x00 0xC3e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
+			   ,<0x00 0xC4000000 0x00 0x1c000000> /* mem available to U-boot/Linux 512M (memory map v16) */
 			/* ,DDR High: one of the following possible sizes */
-			   ,<0x01 0x00000000 0x00 0xc0000000>    /* DDR HIGH 1:  3G (max 4G) */
+			   ,<0x05 0x00000000 0x01 0x00000000>    /* DDR HIGH 1:  4G  */
 			/*  |0x01 0x00000000 0x00 0x00010000     /* RT MMU test */
 			/*  |0x01 0x00010000 0x00 0x3fff0000     /* general-purpose buf (marked reserved in Linux) */
 			/* ,<0x02 0x00000000 0x01 0x00000000> */ /* DDR HIGH 1:  4G */
@@ -245,11 +245,11 @@
 		#address-cells = <2>;
 		#size-cells = <1>;
 		ranges = <0 0 0 0 0xffffffff>;
-		gic: interrupt-controller@f9000000 {
+		gic: interrupt-controller@e2c00000{
 			compatible = "arm,gic-v3"; 
 			#interrupt-cells = <3>;
-			reg = <0x0 0xf9000000 0x20000>,
-			      <0x0 0xf9100000 0x100000>;
+			reg = <0x0 0xe2c00000 0x20000>,
+			      <0x0 0xe2d00000 0x100000>;
 			interrupt-controller;
 			interrupt-parent = <&gic>;
 			interrupts = <GIC_PPI PPI_IRQ__GIC_MAINT GIC_LVL_HI>;
@@ -263,13 +263,13 @@
 		#size-cells = <2>;
 		ranges;
 
-		xgmac: ethernet@0xe5300000 {
+		xgmac: ethernet@0xe0480000{
 			compatible = "cdns,zynqmp-gem";
 	                status = "okay";
 			interrupt-parent = <&gic>;
 			interrupts = <GIC_SPI HPPS_IRQ__XGMAC      GIC_LVL_HI>,
                                      <GIC_SPI HPPS_IRQ__XGMAC_WAKE GIC_LVL_HI>;
-			reg = <0x0 0xe5300000 0x0 0x1000>;
+			reg = <0x0 0xe0480000 0x0 0x1000>;
 			clocks = <&clk125>, <&clk125>, <&clk125>;
                         clock-names = "pclk", "tx_clk", "hclk";
 			#address-cells = <1>;
@@ -326,7 +326,7 @@
 		};
 #endif
 
-		smcc: smcc-memory-controller@f92d0000 {
+		smcc_sram: smcc-sram-memory-controller@e0470000{
 			#address-cells = <2>;
 			#size-cells = <2>; 
 			status = "okay";
@@ -338,27 +338,42 @@
 			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC GIC_LVL_HI>;
 
 			ranges ;
-			reg = <0x0 0xf92d0000 0x0 0x1000>;
-			nand0: nand0@680000000 {
-				status = "okay";
-				compatible = "arm,pl353-nand-r2p1";
-				reg = <0x6 0x8 0x0 0x20000000>;
-				#address-cells = <0x2>;
-				#size-cells = <0x1>;
-				power-domains = <&pd_nand>;
-			};
+			reg = <0x0 0xe0470000 0x0 0x1000>;
 			sram0: sram0@600000000 {
 				status = "disabled";
 				compatible = "offchip-sram";
-				reg = <0x6 0x00000000 0x0 0x400000>;
+				reg = <0x6 0x00000000 0x0 0x80000000>;
 				#address-cells = <0x2>;
 				#size-cells = <0x2>;
 			};
 		};
 
-		smmu: smmu@f9300000 {
+		smcc_nand: smcc-nand-memory-controller@e0460000{
+			#address-cells = <2>;
+			#size-cells = <2>; 
+			status = "okay";
+			clocks = <&clk100>, <&clk125>;
+			clock-names = "aclk", "memclk";
+			/* iommus = <&smmu MASTER_ID_SMC>; */ /* not connected to an MMU TBU */
+			compatible = "arm,pl353-smc-r2p1";
+			interrupt-parent = <&gic>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC GIC_LVL_HI>;
+
+			ranges ;
+			reg = <0x0 0xe0460000 0x0 0x1000>;
+			nand0: nand0@e8000000 {
+				status = "okay";
+				compatible = "arm,pl353-nand-r2p1";
+				reg = <0x0 0xe8000000 0x0 0x1000000>;
+				#address-cells = <0x2>;
+				#size-cells = <0x1>;
+				power-domains = <&pd_nand>;
+			};
+		};
+
+		smmu: smmu@e5000000{
 			compatible = "arm,mmu-500";
-			reg = <0x0 0xf9300000 0x0 0x20000>;
+			reg = <0x0 0xe5000000 0x0 0x20000>;
 			#iommu-cells = <1>;
 			#global-interrupts = <1>;
 			interrupt-parent = <&gic>;
@@ -382,13 +397,13 @@
                                 <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_15 GIC_LVL_HI>;
 		};
 
-		uart0: serial@f92c0000 {
+		uart0: serial@e0450000{
 			compatible = "snps,dw-apb-uart";
 			status = "okay";
 			/* the driver polls; this interrupt is unused. */
 			interrupt-parent = <&gic>;
 			interrupts = <GIC_SPI HPPS_IRQ__HPPS_UART0_0 GIC_LVL_HI>;
-			reg = <0x0 0xf92c0000 0x0 0x1000>;
+			reg = <0x0 0xe0450000 0x0 0x1000>;
 			current-speed = <125000>;
 			reg-offset = <0>;
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */
