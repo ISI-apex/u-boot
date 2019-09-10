@@ -59,9 +59,10 @@ struct mpu_region_config el1_region_config[] = {
 	{ 0x34000000, 0x3FFFFFC0, REGION_1, XN_EN, PRIV_RW_USR_RW,	/* RTPS devices */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
-	{ 0x40000000, 0x7FFFFFC0, REGION_2, XN_DIS, PRIV_RW_USR_RW,	/* RTPS DDR-Low 1 & 2*/
+	{ 0x40000000, 0xBFFFFFC0, REGION_2, XN_DIS, PRIV_RW_USR_RW,	/* RTPS DDR-Low 1 & 2*/
 	    SH_NONE, AttrIndex0, ENABLE,
 	  },
+#if 0
 	{ 0x80000000, 0xBFFFFFC0, REGION_3, XN_DIS, PRIV_RW_USR_RW,	/* RTPS DDR-Low 2 */
 	    SH_NONE, AttrIndex0, ENABLE,
 	  },
@@ -74,6 +75,7 @@ struct mpu_region_config el1_region_config[] = {
 	{ 0xF0000000, 0xFFFFFFC0, REGION_6, XN_EN, PRIV_RW_USR_RW,	/* HSIO */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
+#endif
 #if 0
 /* This area will be taken care by MMU */
 	{ 0x80000000, 0xBFFFFFC0, REGION_3, XN_DIS, PRIV_RW_USR_RW,	/* HPPS DDR-Low 1 & 2 */
@@ -92,9 +94,11 @@ struct mpu_region_config el1_region_config[] = {
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
 #endif
+#if 0
 	{ 0x00000000, 0x300000, REGION_8, XN_DIS, PRIV_RW_USR_RW,	/* TCMS */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
+#endif
 };
 
 int arch_cpu_init(void)
