@@ -43,9 +43,10 @@ struct mpu_region_config el1_region_config[] = {
 	{ 0x30800000, 0x3FFFFFC0, REGION_1, XN_EN, PRIV_RW_USR_RW,	/* RTPS devices */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
-	{ 0x40000000, 0x7FFFFFC0, REGION_2, XN_DIS, PRIV_RW_USR_RW,	/* RTPS DDR-Low 1 & 2*/
+	{ 0x40000000, 0xBFFFFFC0, REGION_2, XN_DIS, PRIV_RW_USR_RW,	/* RTPS DDR-Low 1 & 2*/
 	    SH_NONE, AttrIndex0, ENABLE,
 	  },
+#if 0
 	{ 0x80000000, 0xBFFFFFC0, REGION_3, XN_DIS, PRIV_RW_USR_RW,	/* HPPS DDR-Low 1 & 2 */
 	    SH_NONE, AttrIndex0, ENABLE,
 	  },
@@ -58,12 +59,15 @@ struct mpu_region_config el1_region_config[] = {
 	{ 0xE3000000, 0xF7FFFFC0, REGION_6, XN_EN, PRIV_RW_USR_RW,	/* HSIO */
 	    SH_NONE, AttrIndex1, ENABLE,
 	  },
+#endif
 	{ 0xF8000000, 0xFFFFFFC0, REGION_7, XN_EN, PRIV_RW_USR_RW,	/* HPSC Device 2*/
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
+#if 0
 	{ 0x00000000, 0x600000, REGION_8, XN_DIS, PRIV_RW_USR_RW,	/* TCMS - need to revisit */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
+#endif
 };
 
 int arch_cpu_init(void)
