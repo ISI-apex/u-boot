@@ -335,7 +335,7 @@
 			/* iommus = <&smmu MASTER_ID_SMC>; */ /* not connected to an MMU TBU */
 			compatible = "arm,pl353-smc-r2p1";
 			interrupt-parent = <&gic>;
-			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC GIC_LVL_HI>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC_SRAM GIC_LVL_HI>;
 
 			ranges ;
 			reg = <0x0 0xe0470000 0x0 0x1000>;
@@ -357,7 +357,7 @@
 			/* iommus = <&smmu MASTER_ID_SMC>; */ /* not connected to an MMU TBU */
 			compatible = "arm,pl353-smc-r2p1";
 			interrupt-parent = <&gic>;
-			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC GIC_LVL_HI>;
+			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC_NAND GIC_LVL_HI>;
 
 			ranges ;
 			reg = <0x0 0xe0460000 0x0 0x1000>;
