@@ -43,10 +43,12 @@
 			/* ,<0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
 			   ,<0x00 0x88000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
 			/* ,DDR High: one of the following possible sizes */
-			   ,<0x01 0x00000000 0x00 0xc0000000>    /* DDR HIGH 1:  3G (max 4G) */
-			/*  |0x01 0x00000000 0x00 0x00010000     /* RT MMU test */
-			/*  |0x01 0x00010000 0x00 0x3fff0000     /* general-purpose buf (marked reserved in Linux) */
-			/* ,<0x02 0x00000000 0x01 0x00000000> */ /* DDR HIGH 1:  4G */
+			/*  <0x01 0x00000000 0x00 0x00020000     /* RT MMU test */
+			/*  <0x01 0x00020000 0x00 0x00010000     /* TRCH RapidIO driver buffers */
+			/*  <0x01 0x00030000 0x00 0x00020000     /* TRCH RapidIO test buffers */
+			   ,<0x01 0x00040000 0x00 0xfffb0000>    /* DDR HIGH 1: available to Linux (4G - the above) */
+			/* ,<0x02 0x00000000 0x01 0x00000000> */ /* DDR HIGH ?:  4G */
+			/*  |0x02 0x00000000 0x00 0x40000000     /* general-purpose buf (marked reserved in Linux) */
 			/* ,<0x08 0x00000000 0x08 0x00000000> */ /* DDR HIGH 2: 32G */
 			/* ,<0x10 0x00000000 0x10 0x00000000> */ /* DDR HIGH 3: 64G */
 			;
