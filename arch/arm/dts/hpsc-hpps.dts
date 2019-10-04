@@ -4,8 +4,14 @@
 
 /dts-v1/;
 
-/* Copies from Qemu Device Tree repo */
-#include "hpsc-irqs.dtsh"
+#define HPPS_IRQ__HPPS_UART0_0                   1
+
+// See Table 2-2 in ARM GIC Spec for recommended assignment,
+// and note that PPI ID = INTID - GIC_NR_SGIS = INTID-16
+#define PPI_IRQ__TIMER_HYP                      10
+#define PPI_IRQ__TIMER_VIRT                     11
+#define PPI_IRQ__TIMER_SEC                      13
+#define PPI_IRQ__TIMER_PHYS                     14
 
 #define GIC_SPI 0
 #define GIC_PPI 1
