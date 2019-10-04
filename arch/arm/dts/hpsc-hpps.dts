@@ -107,7 +107,7 @@
 			#size-cells = <0>;
 		};
 
-		smcc: smcc-memory-controller@f92d0000 {
+		smc_sram: smcc-memory-controller@f92d0000 {
 			#address-cells = <2>;
 			#size-cells = <2>; 
 			status = "okay";
@@ -129,7 +129,7 @@
 			};
 		};
 
-		smcc: smcc-memory-controller@f92e0000 {
+		smc_nand: smcc-memory-controller@f9400000 {
 			#address-cells = <2>;
 			#size-cells = <2>;
 			status = "okay";
@@ -141,11 +141,11 @@
 			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMC_NAND GIC_LVL_HI>;
 
 			ranges ;
-			reg = <0x0 0xf92e0000 0x0 0x1000>;
+			reg = <0x0 0xf9400000 0x0 0x1000>;
 			nand0: nand0@680000000 {
 				status = "okay";
 				compatible = "arm,pl353-nand-r2p1";
-				reg = <0x6 0x8 0x0 0x20000000>;
+				reg = <0x0 0xfb000000 0x0 0x1000000>;
 				#address-cells = <0x2>;
 				#size-cells = <0x1>;
 			};
