@@ -22,7 +22,6 @@
 	#size-cells = <2>;
 
 	aliases {
-		ethernet0 = &eth;
 		serial0 = &uart0;
 	};
 
@@ -90,23 +89,6 @@
 			interrupt-controller;
 		};
 
-		eth: ethernet@0xe5300000 {
-			compatible = "cdns,gem";
-			reg = <0x0 0xe5300000 0x0 0x1000>;
-
-	                status = "okay";
-
-			interrupt-parent = <&gic>;
-			interrupts = <GIC_SPI HPPS_IRQ__XGMAC      GIC_LVL_HI>,
-                                     <GIC_SPI HPPS_IRQ__XGMAC_WAKE GIC_LVL_HI>;
-			clocks = <&clk125>, <&clk125>, <&clk125>;
-                        clock-names = "pclk", "tx_clk", "hclk";
-			iommus = <&smmu MASTER_ID_XGMAC>;
-
-			#address-cells = <1>;
-			#size-cells = <0>;
-		};
-
 		smmu: smmu@f9300000 {
 			compatible = "arm,mmu-500";
 			reg = <0x0 0xf9300000 0x0 0x20000>;
@@ -153,10 +135,5 @@
 		#clock-cells = <0>;
 		clock-frequency = <16000000>;
 		u-boot,dm-pre-reloc;
-	};
-	clk125: clk125 {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <125000000>;
 	};
 };
