@@ -89,32 +89,6 @@
 			interrupt-controller;
 		};
 
-		smmu: smmu@f9300000 {
-			compatible = "arm,mmu-500";
-			reg = <0x0 0xf9300000 0x0 0x20000>;
-			#iommu-cells = <1>;
-			#global-interrupts = <1>;
-			interrupt-parent = <&gic>;
-			interrupts = <GIC_SPI HPPS_IRQ__HPPS_SMMU_GLOB GIC_LVL_HI>, /* global irq */
-                                /* context IRQs */
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_0 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_1 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_2 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_3 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_4 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_5 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_6 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_7 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_8 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_9 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_10 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_11 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_12 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_13 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_14 GIC_LVL_HI>,
-                                <GIC_SPI HPPS_IRQ__HPPS_SMMU_CB_15 GIC_LVL_HI>;
-		};
-
 		uart0: serial@f92c0000 {
 			compatible = "snps,dw-apb-uart";
 			status = "okay";
