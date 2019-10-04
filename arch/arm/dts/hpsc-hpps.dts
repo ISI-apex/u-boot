@@ -6,7 +6,6 @@
 
 /* Copies from Qemu Device Tree repo */
 #include "hpsc-irqs.dtsh"
-#include "hpsc-busids.dtsh"
 
 #define GIC_SPI 0
 #define GIC_PPI 1
