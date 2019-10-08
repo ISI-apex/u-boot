@@ -1,5 +1,5 @@
 /*
- * Device tree for HPSC Chiplet
+ * Device tree for HPSC Chiplet (HPPS subsystem)
  */
 
 /dts-v1/;
@@ -20,7 +20,7 @@
 #define GIC_LVL_LO 8
 
 / {
-	model = "HPSC Chiplet";
+	model = "HPSC Chiplet (HPPS)";
 	#address-cells = <2>;
 	#size-cells = <2>;
 
