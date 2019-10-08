@@ -55,13 +55,6 @@
 		stdout-path = "serial0:125000n8";
 	};
 
-	clk100: clk100 {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <100000000>;
-		u-boot,dm-pre-reloc;
-	};
-
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupt-parent = <&gic>;
@@ -71,11 +64,13 @@
 			     <GIC_PPI PPI_IRQ__TIMER_HYP  GIC_LVL_LO>;
 	};
 
-	amba_gic: amba_gic@0 {
+	amba {
+		u-boot,dm-pre-reloc;
+		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
-		compatible = "simple-bus";
-		ranges = <0 0 0xffffffff>;
+		ranges;
+
 		gic: interrupt-controller@30e00000 {
 			compatible = "arm,gic-v3";
 			#interrupt-cells = <3>;
@@ -83,14 +78,6 @@
 			      <0x30e40000 0x40000>;
 			interrupt-controller;
 		};
-	};
-
-	amba {
-		u-boot,dm-pre-reloc;
-		compatible = "simple-bus";
-		#address-cells = <1>;
-		#size-cells = <1>;
-		ranges;
 
 		uart1: serial@30001000 {
 			compatible = "snps,dw-apb-uart";
@@ -103,4 +90,12 @@
 			clock-names = "uart_clk", "pclk";
 		};
 	};
+
+	clk100: clk100 {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <100000000>;
+		u-boot,dm-pre-reloc;
+	};
+
 };
