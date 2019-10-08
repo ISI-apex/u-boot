@@ -82,8 +82,6 @@
 			reg = <0x30e00000 0x10000>,
 			      <0x30e40000 0x40000>;
 			interrupt-controller;
-			interrupt-parent = <&gic>;
-			interrupts = <GIC_PPI PPI_IRQ__GIC_MAINT GIC_LVL_HI>;
 		};
 	};
 
