@@ -1,10 +1,8 @@
 /*
- * Device tree for HPSC Chiplet
+ * Device tree for HPSC Chiplet (HPPS subsystem)
  */
 
 /dts-v1/;
-
-#define HPPS_IRQ__HPPS_UART0_0                   1
 
 // See Table 2-2 in ARM GIC Spec for recommended assignment,
 // and note that PPI ID = INTID - GIC_NR_SGIS = INTID-16
@@ -22,7 +20,7 @@
 #define GIC_LVL_LO 8
 
 / {
-	model = "HPSC Chiplet";
+	model = "HPSC Chiplet (HPPS)";
 	#address-cells = <2>;
 	#size-cells = <2>;
 
@@ -101,9 +99,6 @@
 		uart0: serial@f92c0000 {
 			compatible = "snps,dw-apb-uart";
 			status = "okay";
-			/* the driver polls; this interrupt is unused. */
-			interrupt-parent = <&gic>;
-			interrupts = <GIC_SPI HPPS_IRQ__HPPS_UART0_0 GIC_LVL_HI>;
 			reg = <0x0 0xf92c0000 0x0 0x1000>;
 			current-speed = <125000>;
 			reg-offset = <0>;

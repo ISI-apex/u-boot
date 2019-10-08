@@ -9,9 +9,12 @@
 
 /dts-v1/;
 
-/* Copies from Qemu Device Tree repo */
-#include "hpsc-irqs.dtsh"
-#include "hpsc-busids.dtsh"
+// See Table 2-2 in ARM GIC Spec for recommended assignment,
+// and note that PPI ID = INTID - GIC_NR_SGIS = INTID-16
+#define PPI_IRQ__TIMER_HYP                      10
+#define PPI_IRQ__TIMER_VIRT                     11
+#define PPI_IRQ__TIMER_SEC                      13
+#define PPI_IRQ__TIMER_PHYS                     14
 
 #define GIC_SPI 0
 #define GIC_PPI 1
@@ -52,13 +55,6 @@
 		stdout-path = "serial0:125000n8";
 	};
 
-	clk100: clk100 {
-		compatible = "fixed-clock";
-		#clock-cells = <0>;
-		clock-frequency = <100000000>;
-		u-boot,dm-pre-reloc;
-	};
-
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupt-parent = <&gic>;
@@ -68,28 +64,20 @@
 			     <GIC_PPI PPI_IRQ__TIMER_HYP  GIC_LVL_LO>;
 	};
 
-	amba_gic: amba_gic@0 {
-		#address-cells = <1>;
-		#size-cells = <1>;
-		compatible = "simple-bus";
-		ranges = <0 0 0xffffffff>;
-		gic: interrupt-controller@30e00000 {
-			compatible = "arm,gic-v3";
-			#interrupt-cells = <3>;
-			reg = <0x30e00000 0x10000>,
-			      <0x30e40000 0x40000>;
-			interrupt-controller;
-			interrupt-parent = <&gic>;
-			interrupts = <GIC_PPI PPI_IRQ__GIC_MAINT GIC_LVL_HI>;
-		};
-	};
-
 	amba {
 		u-boot,dm-pre-reloc;
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;
+
+		gic: interrupt-controller@30e00000 {
+			compatible = "arm,gic-v3";
+			#interrupt-cells = <3>;
+			reg = <0x30e00000 0x10000>,
+			      <0x30e40000 0x40000>;
+			interrupt-controller;
+		};
 
 		uart1: serial@30001000 {
 			compatible = "snps,dw-apb-uart";
@@ -102,4 +90,12 @@
 			clock-names = "uart_clk", "pclk";
 		};
 	};
+
+	clk100: clk100 {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <100000000>;
+		u-boot,dm-pre-reloc;
+	};
+
 };
