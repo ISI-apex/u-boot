@@ -34,26 +34,26 @@
 
 	memory@0 {
 		device_type = "memory";
-		reg = 
-			/* DDR Low: 1 Gb */
-			/* Segments base:size (commented regions are not exposed to U-boot/Linux by U-boot DT): */
-			/*  <0x00 0x80000000 0x00 0x00200000> ATF */
-			/*  <0x00 0x80020000 0x00 0x001e0000> padding to align for Linux; boot images */
-			    <0x00 0x80200000 0x00 0x07000000> /* mem available to U-boot/Linux; boot images */
-			/* ,<0x00 0x87200000 0x00 0x00400000> ramoops */
-			/* ,<0x00 0x87600000 0x00 0x00800000> inter-subsystem shared memory regions */
-			/* ,<0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, test, etc) */
-			   ,<0x00 0x88000000 0x00 0x38000000> /* remaining DDR low for Linux to use */
-			/* ,DDR High: one of the following possible sizes */
-			/*  <0x01 0x00000000 0x00 0x00020000     /* RT MMU test */
-			/*  <0x01 0x00020000 0x00 0x00010000     /* TRCH RapidIO driver buffers */
-			/*  <0x01 0x00030000 0x00 0x00020000     /* TRCH RapidIO test buffers */
-			   ,<0x01 0x00040000 0x00 0xfffb0000>    /* DDR HIGH 1: available to Linux (4G - the above) */
-			/* ,<0x02 0x00000000 0x01 0x00000000> */ /* DDR HIGH ?:  4G */
-			/*  |0x02 0x00000000 0x00 0x40000000     /* general-purpose buf (marked reserved in Linux) */
-			/* ,<0x08 0x00000000 0x08 0x00000000> */ /* DDR HIGH 2: 32G */
-			/* ,<0x10 0x00000000 0x10 0x00000000> */ /* DDR HIGH 3: 64G */
-			;
+		reg = /* Segments base:size (commented regions are used but available as
+			   * general-purpose to U-boot/Linux): */
+
+		/* DDR Low:      1 GiB = 0x40000000 */
+
+		/* <0x00 0x80000000 0x00 0x00200000> ATF */
+		/* <0x00 0x80020000 0x00 0x001e0000> padding to align for Linux; bins */
+		   <0x00 0x80200000 0x00 0x07000000> /* mem for U-boot/Linux; bins */
+		/* <0x00 0x87200000 0x00 0x00400000> ramoops */
+		/* <0x00 0x87600000 0x00 0x00800000> inter-subsystem shmem regions */
+		/* <0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, etc) */
+		  ,<0x00 0x88000000 0x00 0x38000000> /* remaining for Linux to use */
+
+		/* DDR High: 4 GiB= 0x01 0x00000000 */
+
+		/* <0x01 0x00000000 0x00 0x00020000     /* RT MMU test */
+		/* <0x01 0x00020000 0x00 0x00010000     /* TRCH RapidIO driver buffers */
+		/* <0x01 0x00030000 0x00 0x00020000     /* TRCH RapidIO test buffers */
+		  ,<0x01 0x00040000 0x00 0xfffb0000>    /* available to Linux */
+		;
 	};
 
 	cpus {
