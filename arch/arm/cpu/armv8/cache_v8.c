@@ -473,6 +473,7 @@ void dcache_enable(void)
 
 void dcache_disable(void)
 {
+#ifndef WORKAROUND_NO_DISABLE_DCACHE
 	uint32_t sctlr;
 
 	sctlr = get_sctlr();
@@ -485,6 +486,7 @@ void dcache_disable(void)
 
 	flush_dcache_all();
 	__asm_invalidate_tlb_all();
+#endif /* WORKAROUND_NO_DISABLE_DCACHE */
 }
 
 int dcache_status(void)
