@@ -363,8 +363,6 @@ void watchdog_reset(void)
 
 int board_early_init_r(void)
 {
-	u32 val;
-
 	if (current_el() != 3)
 		return 0;
 	return 0;
