@@ -23,7 +23,6 @@
 #include <i2c.h>
 #include <g_dnl.h>
 
-#define HPSC
 DECLARE_GLOBAL_DATA_PTR;
 
 #if !defined(CONFIG_SPL_BUILD) && defined(CONFIG_WDT)
@@ -281,7 +280,6 @@ static char *zynqmp_get_silicon_idcode_name(void)
 int board_early_init_f(void)
 {
 	int ret = 0;
-#ifndef HPSC
 #if !defined(CONFIG_SPL_BUILD) && defined(CONFIG_CLK_ZYNQMP)
 	u32 pm_api_version;
 
@@ -293,7 +291,6 @@ int board_early_init_f(void)
 	if (pm_api_version < ZYNQMP_PM_VERSION)
 		panic("PMUFW version error. Expected: v%d.%d\n",
 		      ZYNQMP_PM_VERSION_MAJOR, ZYNQMP_PM_VERSION_MINOR);
-#endif
 #endif
 
 #if defined(CONFIG_ZYNQMP_PSU_INIT_ENABLED)
