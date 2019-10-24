@@ -9,8 +9,6 @@
  * Marius Groeger <mgroeger@sysgo.de>
  */
 
-#define DEBUG
-
 #include <common.h>
 #include <console.h>
 #include <cpu.h>
