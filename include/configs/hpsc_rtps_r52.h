@@ -18,7 +18,8 @@
 
 /* Serial drivers */
 /* The following table includes the supported baudrates */
-#define CONFIG_SYS_BAUDRATE_TABLE  { 125000 }
+/* Only exact multiples of CONFIG_DEBUG_UART_CLOCK -- 16 MHz in Zebu emulator */
+#define CONFIG_SYS_BAUDRATE_TABLE { 125000, 500000 }
 
 # define CONFIG_ENV_SIZE	(128 << 10)
 

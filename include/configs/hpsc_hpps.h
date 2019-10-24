@@ -48,7 +48,8 @@
 #define CONFIG_ARM_DCC
 #define CONFIG_CPU_ARMV8
 
-#define CONFIG_SYS_BAUDRATE_TABLE { 125000 }
+/* Only exact multiples of CONFIG_DEBUG_UART_CLOCK -- 16 MHz in Zebu emulator */
+#define CONFIG_SYS_BAUDRATE_TABLE { 125000, 500000 }
 
 /* BOOTP options */
 #define CONFIG_BOOTP_BOOTFILESIZE
@@ -122,7 +123,7 @@
 	"initrd_addr=0x84000000\0" \
         "initrd_high=0xffffffffffffffff\0" \
 	"fdt_addr=0x80060000\0" \
-        "bootargs=earlycon=uart8250,mmio32,0xF92C0000,125000n8 console=ttyS0,125000n8 loglevel=8\0" \
+        "bootargs=earlycon=uart8250,mmio32,0xF92C0000,500000n8 console=ttyS0,500000n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
         "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0" \
 	"nandrootfs=" \

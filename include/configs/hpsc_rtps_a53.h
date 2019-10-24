@@ -47,7 +47,8 @@
 #define CONFIG_ARM_DCC
 #define CONFIG_CPU_ARMV8
 
-#define CONFIG_SYS_BAUDRATE_TABLE { 125000 }
+/* Only exact multiples of CONFIG_DEBUG_UART_CLOCK -- 16 MHz in Zebu emulator */
+#define CONFIG_SYS_BAUDRATE_TABLE { 125000, 500000 }
 
 /* BOOTP options */
 #define CONFIG_BOOTP_BOOTFILESIZE
