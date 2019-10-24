@@ -63,10 +63,6 @@
 /* Miscellaneous configurable options */
 #define CONFIG_SYS_LOAD_ADDR		0x8000000
 
-#if defined(CONFIG_BOOT_MODE_IN_RAM)
-#define BOOT_MODE_ADDRESS 0x8001fffc
-#endif
-
 /* Monitor Command Prompt */
 /* Console I/O Buffer Size */
 #define CONFIG_SYS_CBSIZE		2048
@@ -125,11 +121,7 @@
 	"fdt_addr=0x80060000\0" \
         "bootargs=earlycon=uart8250,mmio32,0xF92C0000,500000n8 console=ttyS0,500000n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
-        "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0" \
-	"nandrootfs=" \
-		"env set bootargs $bootargs root=/dev/mtdblock0 rw rootfstype=jffs2;" \
-                "env set initrd_addr -;" \
-		"run jtagmemboot\0"
+        "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0"
 #endif
 
 #include <config_distro_bootcmd.h>
