@@ -5,13 +5,6 @@
 
 obj-y	:= zynqmp.o
 
-#ifneq ($(CONFIG_XILINX_PS_INIT_FILE),"")
-#PS_INIT_FILE := $(shell cd $(srctree); readlink -f $(CONFIG_XILINX_PS_INIT_FILE))
-#init-objs := ps_init_gpl.o
-#spl/board/hpsc/hpps/ps_init_gpl.o board/hpsc/hpps/ps_init_gpl.o: $(PS_INIT_FILE)
-#	$(CC) $(c_flags) -I $(srctree)/$(src) -c -o $@ $^
-#endif
-
 ifeq ($(init-objs),)
 init-objs := $(if $(wildcard $(srctree)/$(src)/hpps/psu_init_gpl.c),\
 	psu_init_gpl.o)
@@ -29,12 +22,6 @@ ifdef_any_of = $(filter-out undefined,$(foreach v,$(1),$(origin $(v))))
 
 ifneq ($(call ifdef_any_of, CONFIG_ZYNQMP_PSU_INIT_ENABLED CONFIG_SPL_BUILD),)
 obj-y += $(init-objs)
-endif
-
-obj-$(CONFIG_MMC_SDHCI_ZYNQ) += tap_delays.o
-
-ifndef CONFIG_SPL_BUILD
-obj-$(CONFIG_CMD_ZYNQMP) += cmds.o
 endif
 
 # Suppress "warning: function declaration isn't a prototype"
