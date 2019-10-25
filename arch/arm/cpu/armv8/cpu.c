@@ -50,10 +50,8 @@ int cleanup_before_linux(void)
 	 * turn off D-cache
 	 * dcache_disable() in turn flushes the d-cache and disables MMU
 	 */
-#if 0
 	dcache_disable();
 	invalidate_dcache_all();
-#endif
 
 	return 0;
 }
