@@ -23,8 +23,6 @@
 #include <i2c.h>
 #include <g_dnl.h>
 
-#define HPSC
-#define HPSC_RTPS_A53
 DECLARE_GLOBAL_DATA_PTR;
 
 #if !defined(CONFIG_SPL_BUILD) && defined(CONFIG_WDT)
@@ -282,7 +280,6 @@ static char *zynqmp_get_silicon_idcode_name(void)
 int board_early_init_f(void)
 {
 	int ret = 0;
-#ifndef HPSC
 #if !defined(CONFIG_SPL_BUILD) && defined(CONFIG_CLK_ZYNQMP)
 	u32 pm_api_version;
 
@@ -294,7 +291,6 @@ int board_early_init_f(void)
 	if (pm_api_version < ZYNQMP_PM_VERSION)
 		panic("PMUFW version error. Expected: v%d.%d\n",
 		      ZYNQMP_PM_VERSION_MAJOR, ZYNQMP_PM_VERSION_MINOR);
-#endif
 #endif
 
 #if defined(CONFIG_ZYNQMP_PSU_INIT_ENABLED)
@@ -364,11 +360,9 @@ void watchdog_reset(void)
 
 int board_early_init_r(void)
 {
-	u32 val;
-
 	if (current_el() != 3)
 		return 0;
-#ifndef HPSC_RTPS_A53
+
 	val = readl(&crlapb_base->timestamp_ref_ctrl);
 	val &= ZYNQMP_CRL_APB_TIMESTAMP_REF_CTRL_CLKACT;
 
@@ -384,7 +378,6 @@ int board_early_init_r(void)
 		writel(ZYNQMP_IOU_SCNTR_COUNTER_CONTROL_REGISTER_EN,
 		       &iou_scntr_secure->counter_control_register);
 	}
-#endif
 	return 0;
 }
 
@@ -488,10 +481,9 @@ static u32 reset_reason(void)
 	int i;
 	const char *reason = NULL;
 
-#ifdef HPSC_RTPS_A53
 	ret = 0; i = 0;
 	printf("RTPS A53 reset reson is not implemented\n");
-#else
+
 	ret = readl(&crlapb_base->reset_reason);
 
 	puts("Reset reason:\t");
