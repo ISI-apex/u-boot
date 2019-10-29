@@ -187,24 +187,9 @@
 
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"compressed_kernel_addr=0x71080000\0" \
-	"kernel_addr=0x70080000\0" \
-	"initrd_addr=0x79000000\0" \
-	"fdt_addr=0x75000000\0" \
-        "bootargs=earlycon=uart8250,mmio32,0xF92C0000,125000n8 console=ttyS0,125000n8 loglevel=8\0" \
-	"jtagboot=run jtagmemboot\0" \
-        "jtagmemboot= bootm $compressed_kernel_addr $initrd_addr $fdt_addr\0" \
-	"bootk=" \
-		"booti $kernel_addr - $fdt_addr\0" \
-	"nandrootfs=" \
-		"env set bootargs root=/dev/mtdblock0 rw " \
-		"rootfstype=jffs2 " \
-		"; run bootk \0" \
 	PARTS_DEFAULT \
 	DFU_ALT_INFO
 #endif
-
-#include <config_distro_bootcmd.h>
 
 /* Initial environment variables */
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
