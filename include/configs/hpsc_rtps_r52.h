@@ -6,8 +6,6 @@
 #ifndef __CONFIG_RTPS_R52_H
 #define __CONFIG_RTPS_R52_H
 
-#define CONFIG_REMAKE_ELF
-
 /* CPU clock */
 #define CONFIG_CPU_FREQ_HZ	500000000
 

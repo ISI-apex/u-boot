@@ -6,8 +6,6 @@
 #ifndef __HPSC_HPPS_H
 #define __HPSC_HPPS_H
 
-#define CONFIG_REMAKE_ELF
-
 /* #define CONFIG_ARMV8_SWITCH_TO_EL1 */
 
 /* Generic Interrupt Controller Definitions */
