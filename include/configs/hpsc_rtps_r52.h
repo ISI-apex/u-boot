@@ -6,8 +6,6 @@
 #ifndef __CONFIG_RTPS_R52_H
 #define __CONFIG_RTPS_R52_H
 
-#define CONFIG_EXTRA_ENV_SETTINGS
-
 #define CONFIG_REMAKE_ELF
 
 /* CPU clock */
@@ -22,9 +20,6 @@
 #define CONFIG_SYS_BAUDRATE_TABLE { 125000, 500000 }
 
 # define CONFIG_ENV_SIZE	(128 << 10)
-
-/* Allow to overwrite serial and ethaddr */
-#define CONFIG_ENV_OVERWRITE
 
 /* Boot configuration */
 #define CONFIG_SYS_LOAD_ADDR		0 /* default? */
@@ -44,13 +39,6 @@
 /* Extend size of kernel image for uncompression */
 #define CONFIG_SYS_BOOTM_LEN	(60 * 1024 * 1024)
 
-#define CONFIG_SYS_UBOOT_START	CONFIG_SYS_TEXT_BASE
-
 #define CONFIG_SKIP_LOWLEVEL_INIT
-
-/* 0x0 - 0x40 is used for placing exception vectors */
-#define CONFIG_SYS_MEMTEST_START	0x40
-#define CONFIG_SYS_MEMTEST_END		0x100
-#define CONFIG_SYS_MEMTEST_SCRATCH	0
 
 #endif /* __CONFIG_ZYNQ_RTPS_R52_H */
