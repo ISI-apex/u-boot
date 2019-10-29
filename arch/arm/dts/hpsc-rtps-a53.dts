@@ -89,7 +89,6 @@
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */
 			clocks = <&clk100 &clk100>;
 			clock-names = "uart_clk", "pclk";
-			power-domains = <&pd_uart0>;
 		};
 	};
 
