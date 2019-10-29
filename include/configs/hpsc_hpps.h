@@ -13,8 +13,6 @@
 #define GICD_BASE	0xF9000000
 #define GICR_BASE	0xF9100000
 
-#define CONFIG_ENV_ADDR 0x8005f000
-
 #define CONFIG_SYS_INIT_SP_ADDR		CONFIG_SYS_TEXT_BASE
 
 /* Generic Timer Definitions - setup in EL3. Setup by ATF for other cases */
