@@ -47,7 +47,8 @@
 
 	memory {
 		device_type = "memory";
-		reg = <0x40000000 0x40000000>;
+		/* RTPS DRAM (1GB total) partitioned among R52 and A53 */
+		reg = <0x40000000 0x20000000>;
 	};
 
 	chosen {

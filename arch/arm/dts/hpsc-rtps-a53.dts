@@ -35,14 +35,8 @@
 
 	memory {
 		device_type = "memory";
-		reg = 
-		        /* NOTE: when changing this, remember to also change in Qemu DT */
-			<0x00 0x40000000 0x00 0x40000000>; /* DDR Low 1G - minus space reserved by TRCH */
-		     /* <0x01 0x00000000 0x00 0x40000000>; */   /* TODO: DDR High 1G */
-		     /* <0x01 0x00000000 0x00 0x80000000>; */ /* TODO: DDR High 2G */
-	             /* <0x02 0x00000000 0x01 0x00000000>; */ /* TODO: DDR High 4G */
-	             /* <0x08 0x00000000 0x08 0x00000000>; */ /* TODO: DDR High 32G */
-	             /* <0x10 0x00000000 0x10 0x00000000>; */ /* TODO: DDR High 64G */
+		/* RTPS DRAM (1GB total) partitioned among R52 and A53 */
+		reg = <0x00 0x40000000 0x00 0x20000000>;
 	};
 
 	cpus {
