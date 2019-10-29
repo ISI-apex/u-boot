@@ -59,11 +59,8 @@
         "initrd_high=0xffffffffffffffff\0" \
 	"fdt_addr=0x80060000\0" \
         "bootargs=earlycon=uart8250,mmio32,0xF92C0000,500000n8 console=ttyS0,500000n8 loglevel=8\0" \
-	"jtagboot=run jtagmemboot\0" \
-        "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0"
+        "memboot=bootm $kernel_addr $initrd_addr $fdt_addr\0"
 #endif
-
-#include <config_distro_bootcmd.h>
 
 #define CONFIG_BOARD_EARLY_INIT_F
 
