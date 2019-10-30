@@ -431,7 +431,7 @@ config ENV_EXT4_FILE
 	  It's a string of the EXT4 file name. This file use to store the
 	  environment (explicit path to the file)
 
-if ARCH_ROCKCHIP || ARCH_SUNXI || ARCH_ZYNQ || ARCH_ZYNQMP || ARCH_HPSC_HPPS || ARCH_HPSC_RTPS_A53
+if ARCH_ROCKCHIP || ARCH_SUNXI || ARCH_ZYNQ || ARCH_ZYNQMP || ARCH_HPSC_HPPS || ARCH_HPSC_RTPS_A53 || ARCH_HPSC_RTPS_R52
 
 config ENV_OFFSET
 	hex "Environment Offset"
