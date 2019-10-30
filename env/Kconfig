@@ -484,6 +484,16 @@ config ENV_ADDR_REDUND
 	  Offset from the start of the device (or partition) of the redundant
 	  environment location.
 
+config ENV_ADDR
+	hex "Address of environment storage area"
+	depends on ENV_IS_IN_NVRAM
+	default 0x8005f000 if ARCH_HPSC_HPPS
+	default 0x7803f000 if ARCH_HPSC_RTPS_A53
+	default 0x4003f000 if ARCH_HPSC_RTPS_R52
+	default 0x0
+	help
+	  Address of the environment storage area in non-volatile memory
+
 config ENV_OFFSET
 	hex "Environment offset"
 	depends on ENV_IS_IN_EEPROM || ENV_IS_IN_MMC || ENV_IS_IN_NAND || \
