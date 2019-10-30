@@ -17,8 +17,6 @@
 /* Only exact multiples of CONFIG_DEBUG_UART_CLOCK -- 16 MHz in Zebu emulator */
 #define CONFIG_SYS_BAUDRATE_TABLE { 125000, 500000 }
 
-# define CONFIG_ENV_SIZE	(128 << 10)
-
 /* Boot configuration */
 #define CONFIG_SYS_LOAD_ADDR		0 /* default? */
 
