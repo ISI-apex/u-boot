@@ -33,7 +33,7 @@
 		stdout-path = "serial0:500000n8";
 	};
 
-	memory@0 {
+	memory {
 		device_type = "memory";
 		reg = 
 		        /* NOTE: when changing this, remember to also change in Qemu DT */

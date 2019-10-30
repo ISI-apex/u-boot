@@ -32,7 +32,7 @@
 		stdout-path = "serial0:500000n8";
 	};
 
-	memory@0 {
+	memory {
 		device_type = "memory";
 		reg = /* Segments base:size (commented regions are used but available as
 			   * general-purpose to U-boot/Linux): */
