@@ -34,26 +34,8 @@
 
 	memory {
 		device_type = "memory";
-		reg = /* Segments base:size (commented regions are used but available as
-			   * general-purpose to U-boot/Linux): */
-
-		/* DDR Low:      1 GiB = 0x40000000 */
-
-		/* <0x00 0x80000000 0x00 0x00200000> ATF */
-		/* <0x00 0x80020000 0x00 0x001e0000> padding to align for Linux; bins */
-		   <0x00 0x80200000 0x00 0x07000000> /* mem for U-boot/Linux; bins */
-		/* <0x00 0x87200000 0x00 0x00400000> ramoops */
-		/* <0x00 0x87600000 0x00 0x00800000> inter-subsystem shmem regions */
-		/* <0x00 0x87e00000 0x00 0x00200000> TRCH reservations (MMU PTs, etc) */
-		  ,<0x00 0x88000000 0x00 0x38000000> /* remaining for Linux to use */
-
-		/* DDR High: 4 GiB= 0x01 0x00000000 */
-
-		/* <0x01 0x00000000 0x00 0x00020000     /* RT MMU test */
-		/* <0x01 0x00020000 0x00 0x00010000     /* TRCH RapidIO driver buffers */
-		/* <0x01 0x00030000 0x00 0x00020000     /* TRCH RapidIO test buffers */
-		  ,<0x01 0x00040000 0x00 0xfffb0000>    /* available to Linux */
-		;
+		reg = <0x00 0x80000000 0x00 0x40000000>
+			 ,<0x01 0x00000000 0x01 0x00000000>;
 	};
 
 	cpus {
