@@ -26,4 +26,5 @@ CONFIG_ENV_SIZE=0x1000
 
 # CONFIG_DISPLAY_CPUINFO is not set
 # CONFIG_CMD_XIMG is not set
+# CONFIG_EFI_LOADER is not set
 # CONFIG_NET is not set
