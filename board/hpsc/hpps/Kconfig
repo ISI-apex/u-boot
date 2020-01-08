@@ -1,26 +1,2 @@
 # SPDX-License-Identifier: GPL-2.0
 
-if ARCH_HPSC_HPPS
-
-config SYS_BOARD
-	default "hpps"
-
-config SYS_VENDOR
-	string "Vendor name"
-	default "hpsc"
-
-config SYS_SOC
-	default "hpps"
-
-config SYS_CONFIG_NAME
-	string "Board configuration name"
-	default "hpsc_hpps"
-	help
-	  This option contains information about board configuration name.
-	  Based on this option include/configs/<CONFIG_SYS_CONFIG_NAME>.h header
-	  will be used for board configuration.
-
-config SYS_MALLOC_F_LEN
-	default 0x600
-
-endif

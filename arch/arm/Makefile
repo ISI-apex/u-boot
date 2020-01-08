@@ -59,6 +59,8 @@ machine-$(CONFIG_ARCH_BCMSTB)		+= bcmstb
 machine-$(CONFIG_ARCH_DAVINCI)		+= davinci
 machine-$(CONFIG_ARCH_EXYNOS)		+= exynos
 machine-$(CONFIG_ARCH_HIGHBANK)		+= highbank
+machine-$(CONFIG_ARCH_HPSC_HPPS)	+= hpsc-hpps
+machine-$(CONFIG_ARCH_HPSC_RTPS_R52)	+= rtps-r52
 machine-$(CONFIG_ARCH_K3)		+= k3
 machine-$(CONFIG_ARCH_KEYSTONE)		+= keystone
 # TODO: rename CONFIG_KIRKWOOD -> CONFIG_ARCH_KIRKWOOD
@@ -82,7 +84,6 @@ machine-$(CONFIG_TEGRA)			+= tegra
 machine-$(CONFIG_ARCH_UNIPHIER)		+= uniphier
 machine-$(CONFIG_ARCH_ZYNQ)		+= zynq
 machine-$(CONFIG_ARCH_ZYNQMP_R5)	+= zynqmp-r5
-machine-$(CONFIG_ARCH_HPSC_RTPS_R52)	+= rtps-r52
 
 machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
 

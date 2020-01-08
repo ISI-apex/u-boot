@@ -898,8 +898,16 @@ config ARCH_ZYNQ
 	imply CMD_SPL
 	imply FAT_WRITE
 
+config ARCH_HPSC_HPPS
+	bool "HPPS subsystem in HPSC Chiplet"
+	select CLK
+	select DM
+	select DM_SERIAL
+	select OF_CONTROL
+	imply CMD_DM
+
 config ARCH_HPSC_RTPS_R52 
-	bool "HPSC RTPS R52 based platform"
+	bool "RTPS R52 subsystem in HPSC Chiplet"
 	select CLK
 	select CPU_V8R
 	select DM
@@ -1432,6 +1440,9 @@ source "arch/arm/mach-exynos/Kconfig"
 
 source "arch/arm/mach-highbank/Kconfig"
 
+source "arch/arm/mach-hpsc-hpps/Kconfig"
+source "arch/arm/mach-rtps-r52/Kconfig"
+
 source "arch/arm/mach-integrator/Kconfig"
 
 source "arch/arm/mach-k3/Kconfig"
@@ -1495,8 +1506,6 @@ source "arch/arm/mach-tegra/Kconfig"
 source "arch/arm/mach-uniphier/Kconfig"
 
 source "arch/arm/cpu/armv7/vf610/Kconfig"
-
-source "arch/arm/mach-rtps-r52/Kconfig"
 
 source "arch/arm/mach-zynq/Kconfig"
 
