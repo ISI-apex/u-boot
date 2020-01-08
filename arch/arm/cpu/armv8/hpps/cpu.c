@@ -21,29 +21,14 @@ DECLARE_GLOBAL_DATA_PTR;
  */
 #define HPSC
 #define HPSC_NON_SMC
-#ifdef HPSC
 #define ZYNQMP_MEM_MAP_USED	6
-#else
-#define ZYNQMP_MEM_MAP_USED	4
-#endif
 
-#if !defined(CONFIG_ZYNQMP_NO_DDR)
 #define DRAM_BANKS CONFIG_NR_DRAM_BANKS
-#else
-#define DRAM_BANKS 0
-#endif
-
-#if defined(CONFIG_DEFINE_TCM_OCM_MMAP)
-#define TCM_MAP 1
-#else
-#define TCM_MAP 0
-#endif
 
 /* +1 is end of list which needs to be empty */
-#define ZYNQMP_MEM_MAP_MAX (ZYNQMP_MEM_MAP_USED + DRAM_BANKS + TCM_MAP + 1)
+#define ZYNQMP_MEM_MAP_MAX (ZYNQMP_MEM_MAP_USED + DRAM_BANKS + 1)
 
 static struct mm_region zynqmp_mem_map[ZYNQMP_MEM_MAP_MAX] = {
-#ifdef HPSC
 	{
 		.virt = 0x80000000UL,
 		.phys = 0x80000000UL,
@@ -73,16 +58,6 @@ static struct mm_region zynqmp_mem_map[ZYNQMP_MEM_MAP_MAX] = {
 			 PTE_BLOCK_NON_SHARE |
 			 PTE_BLOCK_PXN | PTE_BLOCK_UXN
 	}, 
-#else
-	{
-		.virt = 0x80000000UL,
-		.phys = 0x80000000UL,
-		.size = 0x70000000UL,
-		.attrs = PTE_BLOCK_MEMTYPE(MT_DEVICE_NGNRNE) |
-			 PTE_BLOCK_NON_SHARE |
-			 PTE_BLOCK_PXN | PTE_BLOCK_UXN
-	}, 
-#endif
 	{
 		.virt = 0xf8000000UL,
 		.phys = 0xf8000000UL,
@@ -106,23 +81,12 @@ static struct mm_region zynqmp_mem_map[ZYNQMP_MEM_MAP_MAX] = {
 			 PTE_BLOCK_NON_SHARE |
 			 PTE_BLOCK_PXN | PTE_BLOCK_UXN
 	},
-#ifdef HPSC
-#if defined(CONFIG_DEFINE_TCM_OCM_MMAP)
-	{
-		.virt = 0xffe00000UL,
-		.phys = 0xffe00000UL,
-		.size = 0x00200000UL,
-		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
-			PTE_BLOCK_INNER_SHARE; 
-	},
-#endif
 	{
 		.virt = 0,
 		.phys = 0,
 		.size = 0,
 		.attrs = 0
 	}
-#endif
 };
 
 void mem_map_fill(void)
@@ -130,19 +94,9 @@ void mem_map_fill(void)
 	int banks = ZYNQMP_MEM_MAP_USED;
 
 #ifdef HPSC
-   return ;
+	return ;
 #endif
 
-#if defined(CONFIG_DEFINE_TCM_OCM_MMAP)
-	zynqmp_mem_map[banks].virt = 0xffe00000UL;
-	zynqmp_mem_map[banks].phys = 0xffe00000UL;
-	zynqmp_mem_map[banks].size = 0x00200000UL;
-	zynqmp_mem_map[banks].attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) |
-				      PTE_BLOCK_INNER_SHARE;
-	banks = banks + 1;
-#endif
-
-#if !defined(CONFIG_ZYNQMP_NO_DDR)
 	for (int i = 0; i < CONFIG_NR_DRAM_BANKS; i++) {
 		/* Zero size means no more DDR that's this is end */
 		if (!gd->bd->bi_dram[i].size)
@@ -155,7 +109,6 @@ void mem_map_fill(void)
 					      PTE_BLOCK_INNER_SHARE;
 		banks = banks + 1;
 	}
-#endif
 }
 
 struct mm_region *mem_map = zynqmp_mem_map;
@@ -292,7 +245,7 @@ int zynqmp_mmio_write(const u32 address,
 {
 #ifdef HPSC_NON_SMC // When TRCH handles power management, this should be fixed
 	return zynqmp_mmio_rawwrite(address, mask, value);
-#endif
+#else
 	if (IS_ENABLED(CONFIG_SPL_BUILD) || current_el() == 3)
 		return zynqmp_mmio_rawwrite(address, mask, value);
 	else
@@ -300,6 +253,7 @@ int zynqmp_mmio_write(const u32 address,
 				  value, 0, NULL);
 
 	return -EINVAL;
+#endif
 }
 
 int zynqmp_mmio_read(const u32 address, u32 *value)
