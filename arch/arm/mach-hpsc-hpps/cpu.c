@@ -5,6 +5,8 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+#define HPSC
+
 /*
  * Number of filled static entries and also the first empty
  * slot in hpps_mem_map.
@@ -79,6 +81,10 @@ static struct mm_region hpps_mem_map[HPPS_MEM_MAP_MAX] = {
 void mem_map_fill(void)
 {
 	int banks = HPPS_MEM_MAP_USED;
+
+#ifdef HPSC
+	return ;
+#endif
 
 	for (int i = 0; i < CONFIG_NR_DRAM_BANKS; i++) {
 		/* Zero size means no more DDR that's this is end */
