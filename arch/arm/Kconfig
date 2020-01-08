@@ -1505,7 +1505,6 @@ source "arch/arm/mach-zynqmp-r5/Kconfig"
 source "arch/arm/cpu/armv7/Kconfig"
 
 source "arch/arm/cpu/armv8/zynqmp/Kconfig"
-source "arch/arm/cpu/armv8/hpps/Kconfig"
 source "arch/arm/cpu/armv8/rtps_a53/Kconfig"
 
 source "arch/arm/cpu/armv8/Kconfig"
