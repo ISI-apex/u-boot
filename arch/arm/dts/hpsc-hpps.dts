@@ -80,7 +80,8 @@
 			reg = <0x0 0xf92c0000 0x0 0x1000>;
 			current-speed = <500000>;
 			reg-offset = <0>;
-			reg-shift = <2>; /* register width: 4-byte = 32-bit */
+			reg-shift = <0>; /* set via CONFIG_SYS_NS16550_REG_SIZE
+					for debug and DM UART drvs to both work */
 			clocks = <&uart_clk &uart_clk>;
 			clock-names = "uart_clk", "pclk";
 		};

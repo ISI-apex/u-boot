@@ -29,6 +29,7 @@
 
 /* Only exact multiples of CONFIG_DEBUG_UART_CLOCK -- 16 MHz in Zebu emulator */
 #define CONFIG_SYS_BAUDRATE_TABLE { 125000, 500000 }
+#define CONFIG_SYS_NS16550_REG_SIZE (-4) /* Synopsis DWC UART has 32-bit regs */
 
 /* BOOTP options */
 #define CONFIG_BOOTP_BOOTFILESIZE
