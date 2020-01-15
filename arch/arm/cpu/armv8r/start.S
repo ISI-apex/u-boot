@@ -69,6 +69,15 @@ switch_to_hypervisor_ret:
 	mcr	p15, 0, r0, c12, c0, 0	@Set VBAR
 #endif
 
+	// Enable EL1 access to all IMP DEF registers
+	LDR r0, =0x7F81
+	DSB
+	MCR p15, 4, r0, c1, c0, 1       // Write to HACTLR
+	ISB
+
+	bl	armv8r_switch_to_el1
+NEXT:
+
 	bl	_main
 
 /*------------------------------------------------------------------------------*/
@@ -107,3 +116,15 @@ ENTRY(switch_to_hypervisor)
 	b	switch_to_hypervisor_ret
 ENDPROC(switch_to_hypervisor)
 	.weak	switch_to_hypervisor
+
+ENTRY(armv8r_switch_to_el1)
+	MRS	r0, cpsr
+	MOV	r1, #0x13
+	BFI	r0, r1, #0, #5
+	MSR	spsr_hyp, r0
+	LDR	r0, =NEXT
+	MSR 	elr_hyp, r0
+	DSB
+	ISB
+	ERET
+ENDPROC(armv8r_switch_to_el1)
