@@ -12,6 +12,7 @@
 #include <asm/system.h>
 #include <asm/barriers.h>
 #include <linux/compiler.h>
+#include <cpu_func.h>
 
 #include <asm/armv8/armv8_mpu.h>
 

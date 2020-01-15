@@ -1043,6 +1043,15 @@ config ARCH_ZYNQ
 	imply CMD_SPL
 	imply FAT_WRITE
 
+config ARCH_HPSC_RTPS_R52
+	bool "HPSC RTPS R52 based platform"
+	select CLK
+	select CPU_V8R
+	select DM
+	select DM_SERIAL
+	select OF_CONTROL
+	imply CMD_DM
+
 config ARCH_ZYNQMP_R5
 	bool "Xilinx ZynqMP R5 based platform"
 	select CLK
@@ -1769,6 +1778,8 @@ source "arch/arm/mach-tegra/Kconfig"
 source "arch/arm/mach-uniphier/Kconfig"
 
 source "arch/arm/cpu/armv7/vf610/Kconfig"
+
+source "arch/arm/mach-rtps-r52/Kconfig"
 
 source "arch/arm/mach-zynq/Kconfig"
 
