@@ -503,6 +503,7 @@ config ENV_OFFSET
 	default 0xE0000 if ARCH_ZYNQ
 	default 0x1E00000 if ARCH_ZYNQMP
 	default 0x0 if ARCH_HPSC_RTPS_R52
+	default 0x0 if ARCH_HPSC_HPPS
 	default 0x7F40000 if ARCH_VERSAL
 	default 0 if ARC
 	default 0x140000 if ARCH_AT91
@@ -524,6 +525,7 @@ config ENV_SIZE
 	default 0x20000 if ARCH_SUNXI || ARCH_ZYNQ || ARCH_OMAP2PLUS || ARCH_AT91
 	default 0x8000 if ARCH_ROCKCHIP || ARCH_ZYNQMP || ARCH_VERSAL
 	default 0x1000 if ARCH_HPSC_RTPS_R52
+	default 0x1000 if ARCH_HPSC_HPPS
 	default 0x4000 if ARC
 	default 0x1f000
 	help
