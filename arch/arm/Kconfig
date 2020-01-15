@@ -1043,6 +1043,15 @@ config ARCH_ZYNQ
 	imply CMD_SPL
 	imply FAT_WRITE
 
+config ARCH_HPSC_HPPS
+	bool "HPPS subsystem in HPSC Chiplet"
+	select ARM64
+	select CLK
+	select DM
+	select DM_SERIAL
+	select OF_CONTROL
+	imply CMD_DM
+
 config ARCH_HPSC_RTPS_R52
 	bool "HPSC RTPS R52 based platform"
 	select CLK
@@ -1709,6 +1718,8 @@ source "arch/arm/mach-exynos/Kconfig"
 
 source "arch/arm/mach-highbank/Kconfig"
 
+source "arch/arm/mach-hpsc-hpps/Kconfig"
+
 source "arch/arm/mach-integrator/Kconfig"
 
 source "arch/arm/mach-k3/Kconfig"
@@ -1859,6 +1870,8 @@ source "board/xilinx/Kconfig"
 source "board/xilinx/zynq/Kconfig"
 source "board/xilinx/zynqmp/Kconfig"
 source "board/phytium/durian/Kconfig"
+
+source "board/hpsc/hpps/Kconfig"
 
 source "arch/arm/Kconfig.debug"
 

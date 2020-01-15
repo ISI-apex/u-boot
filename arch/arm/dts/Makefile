@@ -295,6 +295,8 @@ dtb-$(CONFIG_ARCH_VERSAL) += \
 	versal-mini-emmc1.dtb
 dtb-$(CONFIG_ARCH_ZYNQMP_R5) += \
 	zynqmp-r5.dtb
+dtb-$(CONFIG_ARCH_HPSC_HPPS) += \
+	hpsc-hpps.dtb
 dtb-$(CONFIG_ARCH_HPSC_RTPS_R52) += \
         hpsc-rtps-r52.dtb
 dtb-$(CONFIG_AM33XX) += \
