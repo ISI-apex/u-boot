@@ -407,6 +407,12 @@ config SYS_L2CACHE_OFF
 	  If SoC does not support L2CACHE or one does not want to enable
 	  L2CACHE, choose this option.
 
+config ARM_CCN_50X
+	bool "Include driver for the ARM CCN-50x interconnect"
+	help
+	  If the SoC uses the ARM CCN-50x interconnect, enable
+	  this driver.
+
 config ENABLE_ARM_SOC_BOOT0_HOOK
 	bool "prepare BOOT0 header"
 	help

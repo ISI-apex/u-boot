@@ -251,6 +251,7 @@ menu "Layerscape architecture"
 
 config FSL_LAYERSCAPE
 	bool
+	select ARM_CCN_50X
 
 config FSL_PCIE_COMPAT
 	string "PCIe compatible of Kernel DT"

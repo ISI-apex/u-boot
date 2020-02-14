@@ -90,7 +90,7 @@ ENTRY(lowlevel_init)
 #ifdef CONFIG_ARCH_LS2080A
 	ldr	x0, =CCI_AUX_CONTROL_BASE(20)
 	ldr	x1, =0x00000010
-	bl	ccn504_set_aux
+	bl	ccn50x_set_aux
 
 	/*
 	 * Set forced-order mode in RNI-6, RNI-20
@@ -106,10 +106,10 @@ ENTRY(lowlevel_init)
 
 	ldr	x0, =CCI_AUX_CONTROL_BASE(6)
 	ldr	x1, =0x00000020
-	bl	ccn504_set_aux
+	bl	ccn50x_set_aux
 	ldr	x0, =CCI_AUX_CONTROL_BASE(20)
 	ldr	x1, =0x00000020
-	bl	ccn504_set_aux
+	bl	ccn50x_set_aux
 1:
 #endif
 
@@ -117,68 +117,68 @@ ENTRY(lowlevel_init)
 	ldr	x0, =CCI_MN_BASE
 	ldr	x1, =CCI_MN_RNF_NODEID_LIST
 	ldr	x2, =CCI_MN_DVM_DOMAIN_CTL_SET
-	bl	ccn504_add_masters_to_dvm
+	bl	ccn50x_add_masters_to_dvm
 
 	/* Set all RN-I ports to QoS of 15 */
 	ldr	x0, =CCI_S0_QOS_CONTROL_BASE(0)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S1_QOS_CONTROL_BASE(0)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S2_QOS_CONTROL_BASE(0)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 
 	ldr	x0, =CCI_S0_QOS_CONTROL_BASE(2)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S1_QOS_CONTROL_BASE(2)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S2_QOS_CONTROL_BASE(2)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 
 	ldr	x0, =CCI_S0_QOS_CONTROL_BASE(6)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S1_QOS_CONTROL_BASE(6)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S2_QOS_CONTROL_BASE(6)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 
 	ldr	x0, =CCI_S0_QOS_CONTROL_BASE(12)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S1_QOS_CONTROL_BASE(12)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S2_QOS_CONTROL_BASE(12)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 
 	ldr	x0, =CCI_S0_QOS_CONTROL_BASE(16)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S1_QOS_CONTROL_BASE(16)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S2_QOS_CONTROL_BASE(16)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 
 	ldr	x0, =CCI_S0_QOS_CONTROL_BASE(20)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S1_QOS_CONTROL_BASE(20)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 	ldr	x0, =CCI_S2_QOS_CONTROL_BASE(20)
 	ldr	x1, =0x00FF000C
-	bl	ccn504_set_qos
+	bl	ccn50x_set_qos
 #endif /* CONFIG_SYS_FSL_HAS_CCN504 */
 
 #ifdef SMMU_BASE
