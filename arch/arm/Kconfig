@@ -508,6 +508,7 @@ config ARCH_HPSC
 	select DM
 	select DM_SERIAL
 	select OF_CONTROL
+	select ARM_CCN_50X
 	imply CMD_DM
 
 choice

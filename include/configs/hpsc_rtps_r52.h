@@ -3,6 +3,8 @@
 #ifndef __CONFIG_RTPS_R52_H
 #define __CONFIG_RTPS_R52_H
 
+#include <configs/hpsc.h>
+
 #define CONFIG_REMAKE_ELF
 
 /* CPU clock */
