@@ -6,6 +6,8 @@
 #ifndef __HPSC_HPPS_H
 #define __HPSC_HPPS_H
 
+#include <configs/hpsc.h>
+
 /* #define CONFIG_ARMV8_SWITCH_TO_EL1 */
 
 /* Generic Interrupt Controller Definitions */
