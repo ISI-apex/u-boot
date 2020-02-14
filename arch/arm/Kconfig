@@ -411,7 +411,8 @@ config ARM_CCN_50X
 	bool "Include driver for the ARM CCN-50x interconnect"
 	help
 	  If the SoC uses the ARM CCN-50x interconnect, enable
-	  this driver.
+	  this driver. This driver can be used from platform code
+	  to implement L3 flush operation.
 
 config ENABLE_ARM_SOC_BOOT0_HOOK
 	bool "prepare BOOT0 header"
