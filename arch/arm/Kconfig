@@ -495,6 +495,14 @@ config ARM64_SUPPORT_AARCH32
 	help
 	  This ARM64 system supports AArch32 execution state.
 
+config ARCH_HPSC
+	bool
+	select CLK
+	select DM
+	select DM_SERIAL
+	select OF_CONTROL
+	imply CMD_DM
+
 choice
 	prompt "Target select"
 	default TARGET_HIKEY
@@ -1045,6 +1053,7 @@ config ARCH_ZYNQ
 
 config ARCH_HPSC_HPPS
 	bool "HPPS subsystem in HPSC Chiplet"
+	select ARCH_HPSC
 	select ARM64
 	select CLK
 	select DM
@@ -1054,12 +1063,8 @@ config ARCH_HPSC_HPPS
 
 config ARCH_HPSC_RTPS_R52
 	bool "HPSC RTPS R52 based platform"
-	select CLK
+	select ARCH_HPSC
 	select CPU_V8R
-	select DM
-	select DM_SERIAL
-	select OF_CONTROL
-	imply CMD_DM
 
 config ARCH_ZYNQMP_R5
 	bool "Xilinx ZynqMP R5 based platform"
@@ -1075,17 +1080,13 @@ config ARCH_ZYNQMP_R5
 
 config ARCH_HPSC_RTPS_A53
 	bool "HPSC RTPS A53 based platform"
+	select ARCH_HPSC
 	select ARM64
-	select CLK
-	select DM
-	select DM_SERIAL
 	select DM_USB if USB
-	select OF_CONTROL
 	select SPL_BOARD_INIT if SPL
 	select SPL_CLK if SPL
 	select SUPPORT_SPL
 	imply BOARD_LATE_INIT
-	imply CMD_DM
 	imply FAT_WRITE
 
 config ARCH_ZYNQMP
