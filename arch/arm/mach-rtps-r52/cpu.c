@@ -53,10 +53,10 @@ struct mpu_region_config el2_region_config[] = {
 };
 struct mpu_region_config el1_region_config[] = {
 	/* It is the program's responsibility */
-	{ 0x00000000, 0x300000, REGION_0, XN_DIS, PRIV_RW_USR_RW,	/* TCMS */
+	{ 0x24000000, 0x33FFFFC0, REGION_0, XN_EN, PRIV_RW_USR_RW,	/* LSIO */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
-	{ 0x24000000, 0x3FFFFFC0, REGION_1, XN_EN, PRIV_RW_USR_RW,	/* LSIO + RTPS devices*/
+	{ 0x34000000, 0x3FFFFFC0, REGION_1, XN_EN, PRIV_RW_USR_RW,	/* RTPS devices */
 	    SH_NONE, AttrIndex1, ENABLE,
  	  },
 	{ 0x40000000, 0xBFFFFFC0, REGION_2, XN_DIS, PRIV_RW_USR_RW,	/* RTPS DDR-Low 1 & 2*/
