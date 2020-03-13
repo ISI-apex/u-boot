@@ -73,11 +73,11 @@
 		#size-cells = <1>;
 		compatible = "simple-bus";
 		ranges = <0 0 0xffffffff>;
-		gic: interrupt-controller@34600000 {
+		gic: interrupt-controller@30e00000 {
 			compatible = "arm,gic-v3";
 			#interrupt-cells = <3>;
-			reg = <0x34600000 0x10000>,
-			      <0x34640000 0x40000>;
+			reg = <0x30e00000 0x10000>,
+			      <0x30e40000 0x40000>;
 			interrupt-controller;
 			interrupt-parent = <&gic>;
 			interrupts = <GIC_PPI PPI_IRQ__GIC_MAINT GIC_LVL_HI>;
@@ -91,10 +91,10 @@
 		#size-cells = <1>;
 		ranges;
 
-		uart1: serial@26005000 {
+		uart1: serial@30001000 {
 			compatible = "snps,dw-apb-uart";
 			status = "okay";
-			reg = <0x26005000 0x1000>;
+			reg = <0x30001000 0x1000>;
 			current-speed = <125000>;
 			reg-offset = <0>;
 			reg-shift = <2>; /* register width: 4-byte = 32-bit */

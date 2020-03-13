@@ -16,8 +16,8 @@
 
 /* Generic Interrupt Controller Definitions */
 #define CONFIG_GICV3
-#define GICD_BASE	0xe2c00000
-#define GICR_BASE	0xe2d00000
+#define GICD_BASE	0xF9000000
+#define GICR_BASE	0xF9100000
 /*
 #define CONFIG_GICV2
 #define GICD_BASE	0xF9010000
@@ -25,7 +25,7 @@
 #endif
 */
 
-#define CONFIG_ENV_ADDR 0xc005f000
+#define CONFIG_ENV_ADDR 0x8005f000
 
 #ifndef CONFIG_SYS_MEMTEST_SCRATCH
 # define CONFIG_SYS_MEMTEST_SCRATCH	0x10800000
@@ -60,10 +60,10 @@
 #endif
 
 /* Miscellaneous configurable options */
-#define CONFIG_SYS_LOAD_ADDR		0xc000000
+#define CONFIG_SYS_LOAD_ADDR		0x8000000
 
 #if defined(CONFIG_BOOT_MODE_IN_RAM)
-#define BOOT_MODE_ADDRESS 0xc001fffc
+#define BOOT_MODE_ADDRESS 0x8001fffc
 #endif
 
 /* Monitor Command Prompt */
@@ -117,12 +117,12 @@
 /* initrd_high=~0 means do not relocate ramdisk */
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"fdtcontroladdr=0xc005d000\0" \
-	"kernel_addr=0xc0064000\0" \
-	"initrd_addr=0xc4000000\0" \
+	"fdtcontroladdr=0x8005d000\0" \
+	"kernel_addr=0x80064000\0" \
+	"initrd_addr=0x84000000\0" \
         "initrd_high=0xffffffffffffffff\0" \
-	"fdt_addr=0xc0060000\0" \
-        "bootargs=earlycon=uart8250,mmio32,0xE0450000,125000n8 console=ttyS0,125000n8 loglevel=8\0" \
+	"fdt_addr=0x80060000\0" \
+        "bootargs=earlycon=uart8250,mmio32,0xF92C0000,125000n8 console=ttyS0,125000n8 loglevel=8\0" \
 	"jtagboot=run jtagmemboot\0" \
         "jtagmemboot= bootm $kernel_addr $initrd_addr $fdt_addr\0" \
 	"nandrootfs=" \
