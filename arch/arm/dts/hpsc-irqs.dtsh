@@ -3,8 +3,8 @@
 #define TRCH_IRQ__WDT_TRCH_ST1                   0
 // no ST2 IRQ, because it's wired to reset in HW
 
-#define TRCH_IRQ__WDT_RTPS_R52_0_ST2             1
-#define TRCH_IRQ__WDT_RTPS_R52_1_ST2             2
+#define TRCH_IRQ__WDT_RTPS0_ST2                  1
+#define TRCH_IRQ__WDT_RTPS1_ST2                  2
 
 #define TRCH_IRQ__WDT_HPPS0_ST2                  3
 #define TRCH_IRQ__WDT_HPPS1_ST2                  4
@@ -81,13 +81,7 @@
 #define TRCH_IRQ__TRCH_DMA_EV7                  70
 
 #define TRCH_IRQ__TRCH_SMC                      71
-#define TRCH_IRQ__ELAPSED_TIMER                 72
 
-#define TRCH_IRQ__WDT_RTPS_A53_ST2              73 /* TODO: move to WDTs */
-#define TRCH_IRQ__RTI_TIMER                     74
-
-#define TRCH_IRQ__LSIO_I2C			75
-#define TRCH_IRQ__LSIO_SPI			76
 
 // ******** RTPS interrupt controller inputs **************
 
@@ -246,24 +240,22 @@
 #define HPPS_IRQ__XGMAC                         78
 #define HPPS_IRQ__XGMAC_WAKE                    79
 
-#define HPPS_IRQ__HPPS_SMC_NAND                 80
-#define HPPS_IRQ__HPPS_SMC_SRAM                 81
+#define HPPS_IRQ__HPPS_SMC                      80
 
-#define HPPS_IRQ__IPI0                          82
+#define HPPS_IRQ__IPI0                          81
 
-#define HPPS_IRQ__PMU_0                         83
-#define HPPS_IRQ__PMU_1                         84
-#define HPPS_IRQ__PMU_2                         85
-#define HPPS_IRQ__PMU_3                         86
-#define HPPS_IRQ__PMU_4                         87
-#define HPPS_IRQ__PMU_5                         88
-#define HPPS_IRQ__PMU_6                         89
-#define HPPS_IRQ__PMU_7                         90
+#define HPPS_IRQ__PMU_0                         82
+#define HPPS_IRQ__PMU_1                         83
+#define HPPS_IRQ__PMU_2                         84
+#define HPPS_IRQ__PMU_3                         85
+#define HPPS_IRQ__PMU_4                         86
+#define HPPS_IRQ__PMU_5                         87
+#define HPPS_IRQ__PMU_6                         88
+#define HPPS_IRQ__PMU_7                         89
 
 
 // *** HPPS and RTPS: GIC PPI IRQs ***
 
-#define PPI_IRQ__RTI_TIMER                       7
 #define PPI_IRQ__WDT                             8
 #define PPI_IRQ__GIC_MAINT                       9
 
